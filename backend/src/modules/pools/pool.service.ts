@@ -21,7 +21,7 @@ export class PoolService {
       destinationZone: m.rideRequest?.destinationZone || "",
       seatsReserved: m.seatsReserved,
       fareAmountPoisha: m.fareAmountPoisha,
-      formattedFare: fareService.formatPoisha(m.fareAmountPoisha),
+      formattedFare: fareService.formatWholeTaka(m.fareAmountPoisha),
       membershipStatus: m.membershipStatus,
       joinedAt: m.joinedAt,
     }));
@@ -443,7 +443,7 @@ export class PoolService {
           destinationZone: m.rideRequest?.destinationZone || "",
           seats: m.seatsReserved,
           farePoisha,
-          formattedFare: fareService.formatPoisha(farePoisha),
+          formattedFare: fareService.formatWholeTaka(farePoisha),
           paymentMethod: m.rideRequest?.payment?.method || "CASH",
           paymentStatus: m.rideRequest?.payment?.status || "PAID",
         };

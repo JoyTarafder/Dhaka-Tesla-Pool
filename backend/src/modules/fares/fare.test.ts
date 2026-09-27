@@ -5,7 +5,7 @@ import { fareService } from "./fare.service.js";
 
 describe("Phase 4 — Fare Calculation & Zones Tests", () => {
   describe("FareService Integer Poisha Logic (Rule 13 & PRD.md §7)", () => {
-    it("should calculate exact reference fare for Nusrat (Banani -> Mohakhali, 4km): 6240 poisha (৳62.40)", () => {
+    it("should calculate exact reference fare for Nusrat (Banani -> Mohakhali, 4km) with .50 round-down rule: 6200 poisha (৳62)", () => {
       const fare = fareService.calculateFare("BANANI", "MOHAKHALI", 1, true);
 
       // Verify integer-only poisha values
@@ -19,12 +19,37 @@ describe("Phase 4 — Fare Calculation & Zones Tests", () => {
       expect(fare.baseFarePoisha).toBe(3000); // ৳30.00
       expect(fare.distanceChargePoisha).toBe(4800); // 4 * ৳12 = ৳48.00
       expect(fare.grossFarePoisha).toBe(7800); // ৳78.00
-      expect(fare.discountPoisha).toBe(1560); // 20% of 7800 = 1560
-      expect(fare.finalFarePoisha).toBe(6240); // ৳62.40
-      expect(fare.formattedBdt.finalFare).toBe("৳62.40");
+      expect(fare.discountPoisha).toBe(1560); // 20% of 7800 = 1560 (৳15.60)
+      // Unrounded: 7800 - 1560 = 6240 (62.40). Since .40 <= .50, rounds down to 6200 (৳62)
+      expect(fare.finalFarePoisha).toBe(6200); // ৳62
+      expect(fare.formattedBdt.finalFare).toBe("৳62");
     });
 
-    it("should calculate exact reference fare for Rafiq (Banani -> Gulshan 1, 5km): 7200 poisha (৳72.00)", () => {
+    it("should verify rounding rule: <= .50 rounds down, >= .51 rounds up, whole number output", () => {
+      // Test formatWholeTaka whole number formatting (no decimal)
+      expect(fareService.formatWholeTaka(6200)).toBe("৳62");
+      expect(fareService.formatWholeTaka(6300)).toBe("৳63");
+      expect(fareService.formatPoisha(6240)).toBe("৳62.40");
+
+      // Verify rounding arithmetic:
+      // Remainder 40 (62.40) -> 6200 (62)
+      const r40 = 6240 % 100 <= 50 ? Math.floor(6240 / 100) * 100 : Math.ceil(6240 / 100) * 100;
+      expect(r40).toBe(6200);
+
+      // Remainder 50 (62.50) -> 6200 (62) (<= .50 rounds down)
+      const r50 = 6250 % 100 <= 50 ? Math.floor(6250 / 100) * 100 : Math.ceil(6250 / 100) * 100;
+      expect(r50).toBe(6200);
+
+      // Remainder 51 (62.51) -> 6300 (63) (>= .51 rounds up)
+      const r51 = 6251 % 100 <= 50 ? Math.floor(6251 / 100) * 100 : Math.ceil(6251 / 100) * 100;
+      expect(r51).toBe(6300);
+
+      // Remainder 60 (62.60) -> 6300 (63) (>= .51 rounds up)
+      const r60 = 6260 % 100 <= 50 ? Math.floor(6260 / 100) * 100 : Math.ceil(6260 / 100) * 100;
+      expect(r60).toBe(6300);
+    });
+
+    it("should calculate exact reference fare for Rafiq (Banani -> Gulshan 1, 5km): 7200 poisha (৳72)", () => {
       const fare = fareService.calculateFare("BANANI", "GULSHAN_1", 1, true);
 
       expect(fare.distanceKm).toBe(5.0);
@@ -32,8 +57,8 @@ describe("Phase 4 — Fare Calculation & Zones Tests", () => {
       expect(fare.distanceChargePoisha).toBe(6000); // 5 * ৳12 = ৳60.00
       expect(fare.grossFarePoisha).toBe(9000); // ৳90.00
       expect(fare.discountPoisha).toBe(1800); // 20% of 9000 = 1800
-      expect(fare.finalFarePoisha).toBe(7200); // ৳72.00
-      expect(fare.formattedBdt.finalFare).toBe("৳72.00");
+      expect(fare.finalFarePoisha).toBe(7200); // ৳72
+      expect(fare.formattedBdt.finalFare).toBe("৳72");
     });
 
     it("should reject same origin and destination", () => {
@@ -61,7 +86,7 @@ describe("Phase 4 — Fare Calculation & Zones Tests", () => {
       expect(response.body.data.zones.length).toBeGreaterThanOrEqual(8);
     });
 
-    it("POST /api/fares/estimate should return structured fare breakdown", async () => {
+    it("POST /api/fares/estimate should return structured fare breakdown with whole number final fare", async () => {
       const response = await request(app)
         .post("/api/fares/estimate")
         .send({
@@ -73,8 +98,8 @@ describe("Phase 4 — Fare Calculation & Zones Tests", () => {
 
       expect(response.status).toBe(200);
       expect(response.body.success).toBe(true);
-      expect(response.body.data.finalFarePoisha).toBe(6240);
-      expect(response.body.data.formattedBdt.finalFare).toBe("৳62.40");
+      expect(response.body.data.finalFarePoisha).toBe(6200);
+      expect(response.body.data.formattedBdt.finalFare).toBe("৳62");
     });
   });
 });

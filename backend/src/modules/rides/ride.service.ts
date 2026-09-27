@@ -36,7 +36,7 @@ export class RideService {
       createdAt: ride.createdAt,
       updatedAt: ride.updatedAt,
       cancelledAt: ride.cancelledAt,
-      formattedFare: fareService.formatPoisha(ride.fareAmountPoisha),
+      formattedFare: fareService.formatWholeTaka(ride.fareAmountPoisha),
       paymentMethod: ride.payment?.method || "CASH",
     };
   }
