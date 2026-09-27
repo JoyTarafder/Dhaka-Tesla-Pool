@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Zap, AlertCircle, Loader2 } from "lucide-react";
+import { Zap, AlertCircle, Loader2, ArrowLeft } from "lucide-react";
 import { useAuth } from "@/context/auth-context";
 import { ApiError } from "@/lib/api";
 
@@ -42,6 +42,18 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen flex items-center justify-center p-3.5 sm:p-4 bg-background">
       <div className="w-full max-w-md space-y-6 sm:space-y-8 bg-card border border-border p-5 sm:p-8 rounded-2xl shadow-xl">
+        {/* Navigation back to home */}
+        <div className="flex justify-between items-center">
+          <Link
+            href="/"
+            className="inline-flex items-center gap-1.5 text-xs text-zinc-400 hover:text-white transition-colors py-1 px-2 rounded-lg hover:bg-zinc-900 border border-transparent hover:border-zinc-800"
+          >
+            <ArrowLeft className="w-3.5 h-3.5" />
+            <span>Back to Home</span>
+          </Link>
+          <span className="text-[11px] font-mono text-zinc-500 uppercase tracking-wider">Dhaka Tesla Pool</span>
+        </div>
+
         <div className="text-center space-y-2">
           <div className="inline-flex p-2.5 sm:p-3 rounded-xl bg-emerald-500/10 text-emerald-400 mb-1 sm:mb-2">
             <Zap className="w-5 h-5 sm:w-6 sm:h-6" />
@@ -137,11 +149,13 @@ export default function LoginPage() {
           </div>
         </div>
 
-        <div className="text-center text-xs text-zinc-400">
-          Don&apos;t have an account?{" "}
-          <Link href="/auth/register" className="text-emerald-400 hover:underline">
-            Register here
-          </Link>
+        <div className="pt-2 border-t border-border flex flex-col sm:flex-row items-center justify-center text-center text-xs text-zinc-400 gap-2">
+          <div>
+            Don&apos;t have an account?{" "}
+            <Link href="/auth/register" className="text-emerald-400 hover:underline">
+              Register here
+            </Link>
+          </div>
         </div>
       </div>
     </div>
