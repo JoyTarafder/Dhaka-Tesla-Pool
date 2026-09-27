@@ -108,6 +108,7 @@ export class RideController {
   // Get status audit history for a ride request (Architecture.md §4)
   public async getRideHistory(
     req: Request,
+    // Rule 12 exception: history entries include Prisma nested changedBy join with no exported named type.
     res: Response<ApiSuccessResponse<{ history: any[] }>>,
     next: NextFunction
   ): Promise<void> {

@@ -20,6 +20,8 @@ export class RideService {
     createdAt: Date;
     updatedAt: Date;
     cancelledAt: Date | null;
+    // Rule 12 exception: Prisma's optional include result for payment has no exported named type;
+    // using `any` here avoids reimplementing internal Prisma relation types.
     payment?: { method: any; status: any } | null;
   }): RideRequestResponse {
     return {
