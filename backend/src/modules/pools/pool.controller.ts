@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import { PoolStatus } from "@prisma/client";
 import { poolService } from "./pool.service.js";
 import { ApiSuccessResponse } from "../../shared/types/index.js";
-import { PoolResponse } from "./pool.types.js";
+import { PoolResponse, DriverPaymentHistoryResponse } from "./pool.types.js";
 import { AppError } from "../../middleware/errorHandler.js";
 
 export class PoolController {
@@ -166,6 +166,28 @@ export class PoolController {
       res.status(200).json({
         success: true,
         data: { pool },
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  // Retrieve payment and completed trip history for the authenticated driver
+  public async getDriverPaymentHistory(
+    req: Request,
+    res: Response<ApiSuccessResponse<DriverPaymentHistoryResponse>>,
+    next: NextFunction
+  ): Promise<void> {
+    try {
+      if (!req.user) {
+        throw new AppError("Authentication required", 401, "UNAUTHORIZED");
+      }
+
+      const history = await poolService.getDriverPaymentHistory(req.user.id);
+
+      res.status(200).json({
+        success: true,
+        data: history,
       });
     } catch (error) {
       next(error);

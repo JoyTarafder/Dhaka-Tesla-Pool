@@ -317,3 +317,48 @@ export async function apiGetRideHistory(
     headers: { Authorization: `Bearer ${token}` },
   });
 }
+
+export interface DriverTripPaymentItem {
+  passengerName: string;
+  pickupZone: string;
+  destinationZone: string;
+  seats: number;
+  farePoisha: number;
+  formattedFare: string;
+  paymentMethod: "CASH" | "TESLA_PAY" | string;
+  paymentStatus: string;
+}
+
+export interface DriverTripHistory {
+  poolId: string;
+  completedAt: string | null;
+  pickupZone: string;
+  routeCode: string;
+  totalPassengers: number;
+  totalSeats: number;
+  totalFarePoisha: number;
+  formattedTotalFare: string;
+  breakdown: DriverTripPaymentItem[];
+}
+
+export interface DriverPaymentSummary {
+  totalTrips: number;
+  totalEarningsPoisha: number;
+  formattedTotalEarnings: string;
+  totalPassengersServed: number;
+}
+
+export interface DriverPaymentHistoryResponse {
+  summary: DriverPaymentSummary;
+  trips: DriverTripHistory[];
+}
+
+// Fetch payment and completed trip history for driver console
+export async function apiGetDriverPaymentHistory(
+  token: string
+): Promise<DriverPaymentHistoryResponse> {
+  return request<DriverPaymentHistoryResponse>("/driver/payment-history", {
+    method: "GET",
+    headers: { Authorization: `Bearer ${token}` },
+  });
+}

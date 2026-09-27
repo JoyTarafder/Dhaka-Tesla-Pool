@@ -16,6 +16,7 @@ import {
   Play,
   Check,
   LogOut,
+  Receipt,
 } from "lucide-react";
 import { useAuth } from "@/context/auth-context";
 import { motion } from "framer-motion";
@@ -160,7 +161,15 @@ export default function DriverDashboardPage() {
           </span>
         </div>
 
-        <div className="flex items-center gap-2.5 sm:gap-4">
+        <div className="flex items-center gap-2 sm:gap-3">
+          <Link
+            href="/driver/payment-history"
+            className="px-2.5 sm:px-3 py-1.5 rounded-lg bg-zinc-900 border border-zinc-800 hover:border-zinc-700 text-zinc-300 hover:text-white hover:bg-zinc-800 transition-colors flex items-center gap-1.5 text-xs font-semibold"
+          >
+            <Receipt className="w-3.5 h-3.5 text-emerald-400" />
+            <span className="hidden sm:inline">Payment History</span>
+          </Link>
+
           <div className="text-right">
             <span className="text-xs sm:text-sm font-semibold text-white block">{user?.name} (Driver)</span>
             <span className="hidden sm:block text-xs text-zinc-500 font-mono">{user?.email}</span>
@@ -275,6 +284,18 @@ export default function DriverDashboardPage() {
                   )}
                   {vehicle?.isOnline ? "Go Offline" : "Go Online Now"}
                 </motion.button>
+
+                {/* Quick Link to Payment History */}
+                <Link
+                  href="/driver/payment-history"
+                  className="pt-1 flex items-center justify-between text-xs text-zinc-400 hover:text-white transition-colors group"
+                >
+                  <span className="flex items-center gap-1.5">
+                    <Receipt className="w-3.5 h-3.5 text-emerald-400" />
+                    <span>View Payment History &amp; Earnings</span>
+                  </span>
+                  <span className="text-zinc-600 group-hover:text-zinc-300 font-mono text-[11px]">&rarr;</span>
+                </Link>
               </div>
             </div>
 
@@ -460,9 +481,16 @@ export default function DriverDashboardPage() {
       </main>
 
       {/* Footer */}
-      <footer className="py-4 border-t border-border flex justify-between items-center text-xs text-zinc-500">
+      <footer className="py-4 border-t border-border flex flex-col sm:flex-row justify-between items-center gap-2 text-xs text-zinc-500">
         <span>Dhaka Tesla Pool &bull; Vehicle &amp; Pooling Module</span>
-        <span>Jashim &amp; Bullet (3-Seat EV)</span>
+        <div className="flex gap-4">
+          <Link href="/driver/payment-history" className="hover:text-zinc-300 transition-colors">
+            Payment History
+          </Link>
+          <Link href="/" className="hover:text-zinc-300 transition-colors">
+            Home
+          </Link>
+        </div>
       </footer>
     </div>
   );
