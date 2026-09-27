@@ -19,3 +19,8 @@ driverVehicleRouter.patch("/availability", (req, res, next) =>
 
 // Retrieve active pool assigned to driver (Architecture.md §4)
 driverVehicleRouter.get("/pools", (req, res, next) => poolController.getDriverPool(req, res, next));
+
+// Retrieve payment and completed trip history for driver
+driverVehicleRouter.get("/payment-history", (req, res, next) =>
+  poolController.getDriverPaymentHistory(req, res, next)
+);

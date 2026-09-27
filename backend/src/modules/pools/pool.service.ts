@@ -4,7 +4,7 @@ import { AppError } from "../../middleware/errorHandler.js";
 import { validateRideTransition, validatePoolTransition } from "../../shared/utils/transitions.js";
 import { fareService } from "../fares/fare.service.js";
 import { findMatchingCorridor } from "./pool.corridors.js";
-import { PoolResponse, PoolMemberResponse } from "./pool.types.js";
+import { PoolResponse, PoolMemberResponse, DriverPaymentHistoryResponse } from "./pool.types.js";
 
 export class PoolService {
   // Format pool database record into structured API response
@@ -366,7 +366,7 @@ export class PoolService {
           data: { status: targetRideStatus },
         });
 
-        // If completed, update membership status
+        // If completed, update membership status and settle pending payment records
         if (targetStatus === PoolStatus.COMPLETED) {
           await tx.poolMembership.update({
             where: { id: member.id },
@@ -375,6 +375,20 @@ export class PoolService {
               leftAt: now,
             },
           });
+
+          // Settle any pending cash or online payment as PAID upon completed trip
+          if (tx.payment?.updateMany) {
+            await tx.payment.updateMany({
+              where: {
+                rideRequestId: member.rideRequestId,
+                status: "PENDING",
+              },
+              data: {
+                status: "PAID",
+                paidAt: now,
+              },
+            });
+          }
         }
 
         // Record immutable audit history entry (Architecture.md §5)
@@ -392,6 +406,79 @@ export class PoolService {
     });
 
     return this.getPoolById(pool.id);
+  }
+
+  // Retrieve payment and completed trip history for driver (integer-only poisha arithmetic per Rule 13)
+  public async getDriverPaymentHistory(driverId: string): Promise<DriverPaymentHistoryResponse> {
+    const completedPools = await prisma.pool.findMany({
+      where: {
+        driverId,
+        status: PoolStatus.COMPLETED,
+      },
+      include: {
+        vehicle: true,
+        memberships: {
+          include: {
+            rideRequest: {
+              include: {
+                passenger: true,
+                payment: true,
+              },
+            },
+          },
+        },
+      },
+      orderBy: {
+        completedAt: "desc",
+      },
+    });
+
+    const trips = completedPools.map((pool) => {
+      // Calculate pool-level aggregated seat and fare metrics
+      const breakdown = pool.memberships.map((m) => {
+        const farePoisha = m.fareAmountPoisha;
+        return {
+          passengerName: m.rideRequest?.passenger?.name || "Passenger",
+          pickupZone: m.rideRequest?.pickupZone || pool.pickupZone,
+          destinationZone: m.rideRequest?.destinationZone || "",
+          seats: m.seatsReserved,
+          farePoisha,
+          formattedFare: fareService.formatPoisha(farePoisha),
+          paymentMethod: m.rideRequest?.payment?.method || "CASH",
+          paymentStatus: m.rideRequest?.payment?.status || "PAID",
+        };
+      });
+
+      // Integer arithmetic only (Rule 13)
+      const totalFarePoisha = breakdown.reduce((sum, item) => sum + item.farePoisha, 0);
+      const totalSeats = breakdown.reduce((sum, item) => sum + item.seats, 0);
+
+      return {
+        poolId: pool.id,
+        completedAt: pool.completedAt,
+        pickupZone: pool.pickupZone,
+        routeCode: pool.routeCode,
+        totalPassengers: breakdown.length,
+        totalSeats,
+        totalFarePoisha,
+        formattedTotalFare: fareService.formatPoisha(totalFarePoisha),
+        breakdown,
+      };
+    });
+
+    // Compute lifetime driver summary stats (integer-only arithmetic per Rule 13)
+    const totalEarningsPoisha = trips.reduce((sum, trip) => sum + trip.totalFarePoisha, 0);
+    const totalPassengersServed = trips.reduce((sum, trip) => sum + trip.totalPassengers, 0);
+
+    return {
+      summary: {
+        totalTrips: trips.length,
+        totalEarningsPoisha,
+        formattedTotalEarnings: fareService.formatPoisha(totalEarningsPoisha),
+        totalPassengersServed,
+      },
+      trips,
+    };
   }
 }
 
