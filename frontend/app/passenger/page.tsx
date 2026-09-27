@@ -14,6 +14,7 @@ import {
   XCircle,
   Tag,
   ArrowRight,
+  LogOut,
 } from "lucide-react";
 import { useAuth } from "@/context/auth-context";
 import { motion } from "framer-motion";
@@ -264,9 +265,11 @@ export default function PassengerDashboardPage() {
           </div>
           <button
             onClick={logout}
-            className="text-xs px-2.5 py-1.5 sm:px-3 sm:py-1.5 rounded-lg bg-zinc-900 border border-zinc-800 text-zinc-400 hover:text-white transition-colors"
+            title="Sign Out"
+            className="p-1.5 sm:px-3 sm:py-1.5 rounded-lg bg-red-500/10 border border-red-500/25 text-red-400 hover:bg-red-500/20 hover:text-red-300 transition-colors flex items-center gap-1.5 text-xs font-semibold"
           >
-            Sign Out
+            <LogOut className="w-3.5 h-3.5" />
+            <span className="hidden sm:inline">Sign Out</span>
           </button>
         </div>
       </header>

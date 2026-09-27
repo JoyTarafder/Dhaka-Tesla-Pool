@@ -28,9 +28,10 @@ export default function HomePage() {
               <button
                 onClick={logout}
                 title="Sign Out"
-                className="p-1.5 sm:p-2 rounded-lg bg-zinc-900 border border-zinc-800 text-zinc-400 hover:text-white transition-colors"
+                className="p-1.5 sm:px-3 sm:py-1.5 rounded-lg bg-red-500/10 border border-red-500/25 text-red-400 hover:bg-red-500/20 hover:text-red-300 transition-colors flex items-center gap-1.5 text-xs font-semibold"
               >
-                <LogOut className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                <LogOut className="w-3.5 h-3.5" />
+                <span className="hidden sm:inline">Sign Out</span>
               </button>
             </div>
           ) : (
@@ -65,7 +66,7 @@ export default function HomePage() {
         </h1>
 
         <p className="text-base sm:text-lg text-zinc-400 max-w-2xl leading-relaxed">
-          Share Jashim&apos;s 3-seat electric vehicle &quot;Bullet&quot; along compatible Dhaka corridors.
+          Share 3-seat electric vehicle along compatible Dhaka corridors.
           Guaranteed seat allocation, zero overbooking, and split fares calculated in integer poisha.
         </p>
 
@@ -126,7 +127,6 @@ export default function HomePage() {
       {/* Footer */}
       <footer className="py-6 border-t border-border flex flex-col sm:flex-row justify-between items-center text-xs text-zinc-500 gap-2 sm:gap-4 text-center sm:text-left">
         <span>&copy; {new Date().getFullYear()} Dhaka Tesla Pool. Assessment &amp; Internship Project.</span>
-        <span>Bullet (3-seat EV) &bull; Nusrat &bull; Rafiq &bull; Shirin &bull; Jashim</span>
       </footer>
     </main>
   );
