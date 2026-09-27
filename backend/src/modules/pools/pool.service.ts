@@ -8,7 +8,10 @@ import { PoolResponse, PoolMemberResponse } from "./pool.types.js";
 
 export class PoolService {
   // Format pool database record into structured API response
+  // Rule 12 exception: pool is a Prisma result with deep nested includes (vehicle, memberships,
+  // passenger). Prisma does not export a named type for this query shape; `any` is unavoidable here.
   public formatPool(pool: any): PoolResponse {
+    // Rule 12 exception: same reasoning — m is a single membership row with nested relations.
     const members: PoolMemberResponse[] = (pool.memberships || []).map((m: any) => ({
       membershipId: m.id,
       rideRequestId: m.rideRequestId,

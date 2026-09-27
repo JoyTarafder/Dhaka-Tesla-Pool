@@ -39,14 +39,6 @@ import { RideCardSkeleton } from "@/components/motion/SkeletonShimmer";
 import { PaymentModal, PaymentMethodChoice } from "@/components/motion/PaymentModal";
 
 
-const STATUS_STEPS = [
-  { key: "REQUESTED", label: "Requested" },
-  { key: "MATCHED", label: "Matched" },
-  { key: "ACCEPTED", label: "Driver Accepted" },
-  { key: "DRIVER_ARRIVED", label: "Driver Arrived" },
-  { key: "STARTED", label: "In Transit" },
-  { key: "COMPLETED", label: "Completed" },
-];
 
 export default function PassengerDashboardPage() {
   const { user, token, logout } = useAuth();
@@ -87,8 +79,8 @@ export default function PassengerDashboardPage() {
     try {
       const res = await apiGetRideHistory(token, rideId);
       setSelectedRideHistory(res.history);
-    } catch (err) {
-      console.error("Failed to load ride history:", err);
+    } catch {
+      // History load failure is non-critical; modal will show empty state
     } finally {
       setIsLoadingHistory(false);
     }
@@ -98,7 +90,9 @@ export default function PassengerDashboardPage() {
   useEffect(() => {
     apiGetZones()
       .then((res) => setZones(res.zones))
-      .catch((err) => console.error("Failed to load zones:", err));
+      .catch(() => {
+        // Zone list failure is non-fatal; selects will remain empty
+      });
   }, []);
 
   // Fetch passenger's active ride & history
@@ -236,11 +230,6 @@ export default function PassengerDashboardPage() {
       </div>
     );
   }
-
-  // Calculate current step index for the active ride stepper
-  const currentStepIndex = activeRide
-    ? STATUS_STEPS.findIndex((s) => s.key === activeRide.status)
-    : -1;
 
   return (
     <div className="min-h-screen bg-background text-foreground flex flex-col justify-between p-4 sm:p-8 lg:p-12 max-w-5xl mx-auto">
