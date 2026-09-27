@@ -27,9 +27,14 @@ export interface FareCalculationResult {
 }
 
 export class FareService {
-  // Convert integer poisha to human-readable BDT string
+  // Convert integer poisha to human-readable BDT string (standard 2 decimals)
   public formatPoisha(poisha: number): string {
     return `৳${(poisha / 100).toFixed(2)}`;
+  }
+
+  // Convert integer poisha to human-readable whole Taka string (no decimal per user policy)
+  public formatWholeTaka(poisha: number): string {
+    return `৳${Math.round(poisha / 100)}`;
   }
 
   // Calculate fare breakdown in integer poisha (PRD.md §7)
@@ -59,7 +64,17 @@ export class FareService {
       ? Math.round((grossFarePoisha * POOL_DISCOUNT_PERCENT) / 100)
       : 0;
 
-    const finalFarePoisha = grossFarePoisha - discountPoisha;
+    const unroundedFinalFarePoisha = grossFarePoisha - discountPoisha;
+
+    // Whole number rounding rule (User Specification & PRD.md §7):
+    // If the decimal is .50 or below (remainder <= 50 poisha), round down. Example: 62.40 -> 62.00 / 62 TK.
+    // If the decimal is .51 or above (remainder >= 51 poisha), round up. Example: 62.60 -> 63.00 / 63 TK.
+    // The final amount is always a whole number (no decimal).
+    const remainderPoisha = unroundedFinalFarePoisha % 100;
+    const finalFarePoisha =
+      remainderPoisha <= 50
+        ? Math.floor(unroundedFinalFarePoisha / 100) * 100
+        : Math.ceil(unroundedFinalFarePoisha / 100) * 100;
 
     return {
       pickupZone,
@@ -76,7 +91,7 @@ export class FareService {
         distanceCharge: this.formatPoisha(distanceChargePoisha),
         grossFare: this.formatPoisha(grossFarePoisha),
         discount: this.formatPoisha(discountPoisha),
-        finalFare: this.formatPoisha(finalFarePoisha),
+        finalFare: this.formatWholeTaka(finalFarePoisha), // Whole number without decimals (e.g. ৳62)
       },
     };
   }

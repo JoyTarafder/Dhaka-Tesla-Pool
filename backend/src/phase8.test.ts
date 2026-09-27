@@ -115,7 +115,7 @@ describe("Phase 8 — Core Engine & Security Verification Suite", () => {
     destinationZone: "MOHAKHALI",
     seatCount: 1,
     estimatedDistanceKm: 4.0,
-    fareAmountPoisha: 6240, // ৳62.40
+    fareAmountPoisha: 6200, // ৳62
     status: RideStatus.REQUESTED,
     createdAt: new Date(),
     updatedAt: new Date(),
@@ -130,7 +130,7 @@ describe("Phase 8 — Core Engine & Security Verification Suite", () => {
     destinationZone: "GULSHAN_1",
     seatCount: 1,
     estimatedDistanceKm: 5.0,
-    fareAmountPoisha: 7200, // ৳72.00
+    fareAmountPoisha: 7200, // ৳72
     status: RideStatus.REQUESTED,
     createdAt: new Date(),
     updatedAt: new Date(),
@@ -162,8 +162,8 @@ describe("Phase 8 — Core Engine & Security Verification Suite", () => {
       expect(fare.distanceChargePoisha).toBe(4800); // 4km * ৳12 = ৳48.00
       expect(fare.grossFarePoisha).toBe(7800); // ৳30 + ৳48 = ৳78.00
       expect(fare.discountPoisha).toBe(1560); // 20% discount = ৳15.60
-      expect(fare.finalFarePoisha).toBe(6240); // ৳62.40
-      expect(fare.formattedBdt.finalFare).toBe("৳62.40");
+      expect(fare.finalFarePoisha).toBe(6200); // ৳62 (rounded down from 62.40 per whole-number policy)
+      expect(fare.formattedBdt.finalFare).toBe("৳62");
     });
 
     it("should calculate exact reference fare for Rafiq (Banani -> Gulshan 1, 5.0km, 1 seat, pooled)", () => {
@@ -174,15 +174,15 @@ describe("Phase 8 — Core Engine & Security Verification Suite", () => {
       expect(fare.distanceChargePoisha).toBe(6000); // 5km * ৳12 = ৳60.00
       expect(fare.grossFarePoisha).toBe(9000); // ৳30 + ৳60 = ৳90.00
       expect(fare.discountPoisha).toBe(1800); // 20% discount = ৳18.00
-      expect(fare.finalFarePoisha).toBe(7200); // ৳72.00
-      expect(fare.formattedBdt.finalFare).toBe("৳72.00");
+      expect(fare.finalFarePoisha).toBe(7200); // ৳72
+      expect(fare.formattedBdt.finalFare).toBe("৳72");
     });
 
     it("should calculate correct gross fare without pooling discount for unpooled rides", () => {
       const soloFare = fareService.calculateFare("BANANI", "MOHAKHALI", 1, false);
       expect(soloFare.discountPoisha).toBe(0);
-      expect(soloFare.finalFarePoisha).toBe(7800); // ৳78.00
-      expect(soloFare.formattedBdt.finalFare).toBe("৳78.00");
+      expect(soloFare.finalFarePoisha).toBe(7800); // ৳78
+      expect(soloFare.formattedBdt.finalFare).toBe("৳78");
     });
 
     it("should scale distance charge proportionally for multi-seat requests", () => {
@@ -192,8 +192,9 @@ describe("Phase 8 — Core Engine & Security Verification Suite", () => {
       expect(twoSeatFare.distanceChargePoisha).toBe(9600); // 4800 * 2
       expect(twoSeatFare.grossFarePoisha).toBe(15600);
       expect(twoSeatFare.discountPoisha).toBe(3120); // 20% of 15600
-      expect(twoSeatFare.finalFarePoisha).toBe(12480); // ৳124.80
-      expect(twoSeatFare.formattedBdt.finalFare).toBe("৳124.80");
+      // Unrounded: 15600 - 3120 = 12480 (124.80). Since .80 >= .51, rounds up to 12500 (৳125)
+      expect(twoSeatFare.finalFarePoisha).toBe(12500); // ৳125
+      expect(twoSeatFare.formattedBdt.finalFare).toBe("৳125");
     });
 
 

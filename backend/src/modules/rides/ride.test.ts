@@ -46,7 +46,7 @@ describe("Phase 4 — Ride Request Module Tests", () => {
     destinationZone: "MOHAKHALI",
     seatCount: 1,
     estimatedDistanceKm: 4.0,
-    fareAmountPoisha: 6240, // ৳62.40
+    fareAmountPoisha: 6200, // ৳62
     status: RideStatus.REQUESTED,
     createdAt: new Date(),
     updatedAt: new Date(),
@@ -60,7 +60,7 @@ describe("Phase 4 — Ride Request Module Tests", () => {
     destinationZone: "GULSHAN_1",
     seatCount: 1,
     estimatedDistanceKm: 5.0,
-    fareAmountPoisha: 7200, // ৳72.00
+    fareAmountPoisha: 7200, // ৳72
     status: RideStatus.REQUESTED,
     createdAt: new Date(),
     updatedAt: new Date(),
@@ -91,8 +91,8 @@ describe("Phase 4 — Ride Request Module Tests", () => {
 
       expect(response.status).toBe(201);
       expect(response.body.success).toBe(true);
-      expect(response.body.data.ride.fareAmountPoisha).toBe(6240);
-      expect(response.body.data.ride.formattedFare).toBe("৳62.40");
+      expect(response.body.data.ride.fareAmountPoisha).toBe(6200);
+      expect(response.body.data.ride.formattedFare).toBe("৳62");
       expect(response.body.data.ride.status).toBe("REQUESTED");
     });
 

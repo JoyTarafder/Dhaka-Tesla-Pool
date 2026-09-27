@@ -430,12 +430,15 @@ export default function PassengerDashboardPage() {
             </div>
 
             {/* Fare Breakdown Reveal (Design.md §4.5) */}
-            <div className="p-4 sm:p-6 rounded-2xl bg-card border border-border flex flex-col justify-between space-y-4">
-              <div>
+            <div className="p-4 sm:p-6 rounded-2xl bg-card border border-border flex flex-col space-y-4">
+              <div className="flex items-center justify-between pb-3 border-b border-zinc-800/80">
                 <div className="flex items-center gap-2 text-white font-bold text-base">
                   <Tag className="w-4 h-4 text-emerald-400" />
                   <span>Fare Estimate</span>
                 </div>
+                <span className="text-[11px] px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 font-medium">
+                  20% Pool Active
+                </span>
               </div>
 
               {fareEstimate ? (
@@ -443,12 +446,12 @@ export default function PassengerDashboardPage() {
                   <FareBreakdown fare={fareEstimate} />
                 </div>
               ) : isEstimating ? (
-                <div className="py-8 flex flex-col items-center justify-center gap-2 text-zinc-400">
+                <div className="py-12 flex flex-col items-center justify-center gap-2 text-zinc-400">
                   <Loader2 className="w-5 h-5 animate-spin text-emerald-400" />
                   <span className="text-xs">Computing corridor rates...</span>
                 </div>
               ) : (
-                <div className="py-8 text-center text-xs text-zinc-500">
+                <div className="py-12 text-center text-xs text-zinc-500">
                   Select pickup and destination to view live fare calculation.
                 </div>
               )}
@@ -614,7 +617,7 @@ export default function PassengerDashboardPage() {
       />
 
       {/* Footer */}
-      <footer className="py-4 border-t border-border flex justify-between  items-center text-xs text-zinc-500">
+      <footer className="py-4 border-t border-border flex justify-center  items-center text-xs text-zinc-500">
         <span>Dhaka Tesla Pool &bull; Passenger Module</span>
       </footer>
     </div>
