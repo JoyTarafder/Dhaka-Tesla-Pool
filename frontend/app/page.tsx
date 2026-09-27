@@ -125,7 +125,7 @@ export default function HomePage() {
       </section>
 
       {/* Footer */}
-      <footer className="py-6 border-t border-border flex flex-col sm:flex-row justify-between items-center text-xs text-zinc-500 gap-2 sm:gap-4 text-center sm:text-left">
+      <footer className="py-6 border-t border-border flex flex-col sm:flex-row justify-center items-center text-xs text-zinc-500 gap-2 sm:gap-4 text-center sm:text-left">
         <span>&copy; {new Date().getFullYear()} Dhaka Tesla Pool. Assessment &amp; Internship Project.</span>
       </footer>
     </main>
