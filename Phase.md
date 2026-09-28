@@ -68,8 +68,8 @@ Commit format: `<type>(<scope>): <short description>` — types: `feat, fix, ref
 - [x] Screenshots/GIFs placeholder & guide
 - [x] AI Usage section
 - [x] Known limitations
-- [ ] Merge to `pre-release` (requires user git permission)
-- [ ] Tag `release/v1.0.0` (requires user git permission)
+- [x] Merge to `pre-release` (created & pushed)
+- [x] Tag `release/v1.0.0` (created & pushed tag `v1.0.0` + branch `release/v1.0.0`)
 - [ ] Record 6-minute final video (user deliverable)
 
 ## Video structure reminder (max 6 minutes)

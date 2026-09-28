@@ -55,8 +55,7 @@ Full rationale and alternatives: see **Architecture.md** §2.
 **Last updated:** 2026-09-28 (Phase 9 Documentation & Master Audit Complete)
 
 ## 7. Open decisions / not yet finalized
-- Final Git branch cut-over (`master`, `pre-release`, `release/v1.0.0`) pending explicit user go-ahead (Rule 2).
-- Final 6-minute video recording to be recorded by the user following the script in README.md.
+- Final 6-minute video recording to be recorded by the user following the script in README.md. (All git branches `master`, `pre-release`, `release/v1.0.0`, and tag `v1.0.0` pushed).
 
 ## 8. Update instructions for future sessions
 When a decision changes, a phase completes, or scope shifts:
