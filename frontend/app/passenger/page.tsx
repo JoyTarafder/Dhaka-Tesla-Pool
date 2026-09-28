@@ -561,9 +561,8 @@ export default function PassengerDashboardPage() {
                         &quot;{item.reason}&quot;
                       </p>
                     )}
-                    <div className="text-[10px] text-zinc-500 flex justify-between pt-1">
+                    <div className="text-[10px] text-zinc-500 pt-1">
                       <span>Changed by: {item.changedByName}</span>
-                      {item.poolId && <span className="font-mono">Pool: {item.poolId.slice(0, 8)}...</span>}
                     </div>
                   </div>
                 ))}
