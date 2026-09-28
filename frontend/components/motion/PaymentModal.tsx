@@ -43,17 +43,17 @@ export function PaymentModal({
               onCancel();
             }
           }}
-          className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/85"
+          className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-sm"
         >
           {/* Modal Card with smooth scale and stopPropagation */}
           <motion.div
             key="payment-modal-card"
-            initial={{ opacity: 0, scale: 0.96, y: 6 }}
+            initial={{ opacity: 0, scale: 0.95, y: 10 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.96, y: 6 }}
-            transition={{ duration: 0.18, ease: "easeOut" }}
+            exit={{ opacity: 0, scale: 0.95, y: 10 }}
+            transition={{ duration: 0.2, ease: "easeOut" }}
             onClick={(e) => e.stopPropagation()}
-            className="relative w-full max-w-md max-h-[92vh] overflow-y-auto p-4 sm:p-6 rounded-2xl bg-zinc-950 border border-zinc-800 space-y-4 sm:space-y-5 shadow-2xl z-10"
+            className="relative w-full max-w-md max-h-[92vh] overflow-y-auto p-5 sm:p-6 rounded-2xl bg-zinc-950/95 border border-white/[0.1] space-y-4 sm:space-y-5 shadow-[0_20px_50px_rgba(0,0,0,0.8)] z-10"
           >
 
             {/* Header & Ride Summary */}
@@ -87,18 +87,18 @@ export function PaymentModal({
               <motion.div
                 whileTap={{ scale: 0.98 }}
                 onClick={() => setSelectedMethod("ONLINE")}
-                className={`p-3.5 rounded-xl border cursor-pointer transition-colors duration-150 flex items-center justify-between gap-3 ${
+                className={`p-4 rounded-xl border cursor-pointer transition-all duration-200 flex items-center justify-between gap-3 ${
                   selectedMethod === "ONLINE"
-                    ? "bg-emerald-500/10 border-emerald-400/80 text-white shadow-md shadow-emerald-500/10"
-                    : "bg-zinc-900/60 border-zinc-800/80 text-zinc-300 hover:border-zinc-700"
+                    ? "bg-gradient-to-r from-emerald-500/15 to-emerald-500/5 border-emerald-400 text-white shadow-md shadow-emerald-500/10"
+                    : "bg-zinc-900/50 border-white/[0.06] text-zinc-300 hover:border-zinc-700 hover:bg-zinc-900/80"
                 }`}
               >
                 <div className="flex items-center gap-3">
                   <div
                     className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 transition-colors duration-150 ${
                       selectedMethod === "ONLINE"
-                        ? "bg-emerald-400 text-black font-bold"
-                        : "bg-zinc-800 text-zinc-400"
+                        ? "bg-gradient-to-tr from-emerald-400 to-emerald-300 text-zinc-950 font-bold shadow-md shadow-emerald-500/20"
+                        : "bg-zinc-800/80 text-zinc-400"
                     }`}
                   >
                     <CreditCard className="w-5 h-5" />
@@ -106,7 +106,7 @@ export function PaymentModal({
                   <div>
                     <div className="flex items-center gap-2">
                       <span className="text-sm font-bold text-white">Online Payment</span>
-                      <span className="text-[10px] font-semibold uppercase px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
+                      <span className="text-[10px] font-bold uppercase px-1.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
                         Instant
                       </span>
                     </div>
@@ -129,18 +129,18 @@ export function PaymentModal({
               <motion.div
                 whileTap={{ scale: 0.98 }}
                 onClick={() => setSelectedMethod("CASH")}
-                className={`p-3.5 rounded-xl border cursor-pointer transition-colors duration-150 flex items-center justify-between gap-3 ${
+                className={`p-4 rounded-xl border cursor-pointer transition-all duration-200 flex items-center justify-between gap-3 ${
                   selectedMethod === "CASH"
-                    ? "bg-emerald-500/10 border-emerald-400/80 text-white shadow-md shadow-emerald-500/10"
-                    : "bg-zinc-900/60 border-zinc-800/80 text-zinc-300 hover:border-zinc-700"
+                    ? "bg-gradient-to-r from-emerald-500/15 to-emerald-500/5 border-emerald-400 text-white shadow-md shadow-emerald-500/10"
+                    : "bg-zinc-900/50 border-white/[0.06] text-zinc-300 hover:border-zinc-700 hover:bg-zinc-900/80"
                 }`}
               >
                 <div className="flex items-center gap-3">
                   <div
                     className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 transition-colors duration-150 ${
                       selectedMethod === "CASH"
-                        ? "bg-emerald-400 text-black font-bold"
-                        : "bg-zinc-800 text-zinc-400"
+                        ? "bg-gradient-to-tr from-emerald-400 to-emerald-300 text-zinc-950 font-bold shadow-md shadow-emerald-500/20"
+                        : "bg-zinc-800/80 text-zinc-400"
                     }`}
                   >
                     <Banknote className="w-5 h-5" />
@@ -173,7 +173,7 @@ export function PaymentModal({
                 type="button"
                 onClick={onCancel}
                 disabled={isLoading}
-                className="w-full sm:w-auto px-4 py-2.5 rounded-xl bg-zinc-900 border border-zinc-800 text-zinc-300 text-xs font-semibold hover:bg-zinc-800 transition-colors disabled:opacity-50 text-center"
+                className="w-full sm:w-auto px-4 py-2.5 rounded-xl bg-zinc-900/80 border border-white/[0.08] text-zinc-300 text-xs font-semibold hover:bg-zinc-800 hover:text-white transition-colors disabled:opacity-50 text-center"
               >
                 Cancel
               </motion.button>
@@ -182,7 +182,7 @@ export function PaymentModal({
                 type="button"
                 onClick={() => onConfirm(selectedMethod)}
                 disabled={isLoading}
-                className="w-full sm:w-auto px-3 sm:px-5 py-2.5 rounded-xl bg-emerald-400 hover:bg-emerald-300 text-black text-xs font-bold flex items-center justify-center gap-1.5 sm:gap-2 shadow-lg shadow-emerald-500/20 transition-all disabled:opacity-50 text-center"
+                className="w-full sm:w-auto px-3 sm:px-5 py-2.5 rounded-xl bg-gradient-to-r from-emerald-400 to-emerald-300 hover:from-emerald-300 hover:to-emerald-200 text-zinc-950 text-xs font-bold flex items-center justify-center gap-1.5 sm:gap-2 shadow-lg shadow-emerald-500/25 transition-all disabled:opacity-50 text-center"
               >
                 {isLoading ? (
                   <>
