@@ -40,17 +40,17 @@ export function ConfirmModal({
               onCancel();
             }
           }}
-          className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/85"
+          className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-sm"
         >
           {/* Modal Card with smooth scale and stopPropagation */}
           <motion.div
             key="confirm-modal-card"
-            initial={{ opacity: 0, scale: 0.96, y: 6 }}
+            initial={{ opacity: 0, scale: 0.95, y: 10 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.96, y: 6 }}
-            transition={{ duration: 0.18, ease: "easeOut" }}
+            exit={{ opacity: 0, scale: 0.95, y: 10 }}
+            transition={{ duration: 0.2, ease: "easeOut" }}
             onClick={(e) => e.stopPropagation()}
-            className="relative w-full max-w-md max-h-[92vh] overflow-y-auto p-4 sm:p-6 rounded-2xl bg-zinc-950 border border-zinc-800 space-y-4 shadow-2xl z-10"
+            className="relative w-full max-w-md max-h-[92vh] overflow-y-auto p-5 sm:p-6 rounded-2xl bg-zinc-950/95 border border-white/[0.1] space-y-4 shadow-[0_20px_50px_rgba(0,0,0,0.8)] z-10"
           >
 
             <div className="flex items-center gap-3">
