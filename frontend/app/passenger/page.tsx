@@ -39,7 +39,6 @@ import { RideCardSkeleton, FareBreakdownSkeleton } from "@/components/motion/Ske
 import { PaymentModal, PaymentMethodChoice } from "@/components/motion/PaymentModal";
 
 
-
 export default function PassengerDashboardPage() {
   const { user, token, logout } = useAuth();
 
@@ -201,8 +200,6 @@ export default function PassengerDashboardPage() {
       setIsCancelling(false);
     }
   };
-
-
   // Guard: Unauthorized state (Design.md §3)
   if (!isLoadingRides && (!user || user.role !== "PASSENGER")) {
     return (

@@ -144,7 +144,8 @@ export default function DriverDashboardPage() {
     );
   }
 
-  const occupiedSeatsCount = activePool?.occupiedSeats ?? 0;  const totalCapacity = vehicle?.capacity ?? 3;
+  const occupiedSeatsCount = activePool?.occupiedSeats ?? 0;
+  const totalCapacity = vehicle?.capacity ?? 3;
 
   return (
     <div className="min-h-screen bg-background text-foreground flex flex-col justify-between p-4 sm:p-6 lg:p-8 max-w-5xl mx-auto relative">

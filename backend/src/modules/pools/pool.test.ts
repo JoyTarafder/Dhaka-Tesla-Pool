@@ -529,6 +529,8 @@ describe("Phase 5 — Pooling & Concurrency Protection Tests", () => {
           pool: { update: vi.fn().mockResolvedValue({ ...startedPool, status: PoolStatus.COMPLETED, completedAt: new Date() }) },
           rideRequest: { update: vi.fn().mockResolvedValue({ ...nusratRide, status: RideStatus.COMPLETED }) },
           poolMembership: { update: vi.fn().mockResolvedValue({}) },
+          // payment.updateMany settles pending payments on completion — must be present in tx mock
+          payment: { updateMany: vi.fn().mockResolvedValue({ count: 1 }) },
           rideStatusHistory: { create: vi.fn().mockResolvedValue({}) },
         };
         return callback(txMock);

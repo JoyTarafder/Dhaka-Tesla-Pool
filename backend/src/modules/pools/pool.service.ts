@@ -1,4 +1,5 @@
-import { PoolStatus, RideStatus, MembershipStatus } from "@prisma/client";
+import { PoolStatus, RideStatus, MembershipStatus, Role } from "@prisma/client";
+import { Prisma } from "@prisma/client";
 import { prisma } from "../../db/prisma.js";
 import { AppError } from "../../middleware/errorHandler.js";
 import { validateRideTransition, validatePoolTransition } from "../../shared/utils/transitions.js";
@@ -6,13 +7,20 @@ import { fareService } from "../fares/fare.service.js";
 import { findMatchingCorridor } from "./pool.corridors.js";
 import { PoolResponse, PoolMemberResponse, DriverPaymentHistoryResponse } from "./pool.types.js";
 
+// Typed shape for a pool fetched with all required nested relations
+type PoolWithRelations = Prisma.PoolGetPayload<{
+  include: {
+    vehicle: { include: { driver: true } };
+    memberships: {
+      include: { rideRequest: { include: { passenger: true } } };
+    };
+  };
+}>;
+
 export class PoolService {
   // Format pool database record into structured API response
-  // Rule 12 exception: pool is a Prisma result with deep nested includes (vehicle, memberships,
-  // passenger). Prisma does not export a named type for this query shape; `any` is unavoidable here.
-  public formatPool(pool: any): PoolResponse {
-    // Rule 12 exception: same reasoning — m is a single membership row with nested relations.
-    const members: PoolMemberResponse[] = (pool.memberships || []).map((m: any) => ({
+  public formatPool(pool: PoolWithRelations): PoolResponse {
+    const members: PoolMemberResponse[] = pool.memberships.map((m) => ({
       membershipId: m.id,
       rideRequestId: m.rideRequestId,
       passengerId: m.rideRequest?.passengerId || "",
@@ -290,7 +298,7 @@ export class PoolService {
     driverId: string,
     poolId: string,
     targetStatus: PoolStatus,
-    userRole: string = "DRIVER"
+    userRole: Role = Role.DRIVER
   ): Promise<PoolResponse> {
     const pool = await prisma.pool.findUnique({
       where: { id: poolId },
@@ -312,7 +320,7 @@ export class PoolService {
     }
 
     // Authorization: only the assigned driver or an admin may transition this pool
-    if (pool.driverId !== driverId && userRole !== "ADMIN") {
+    if (pool.driverId !== driverId && userRole !== Role.ADMIN) {
       throw new AppError(
         "Forbidden: You are not the assigned driver for this vehicle pool",
         403,
@@ -377,18 +385,16 @@ export class PoolService {
           });
 
           // Settle any pending cash or online payment as PAID upon completed trip
-          if (tx.payment?.updateMany) {
-            await tx.payment.updateMany({
-              where: {
-                rideRequestId: member.rideRequestId,
-                status: "PENDING",
-              },
-              data: {
-                status: "PAID",
-                paidAt: now,
-              },
-            });
-          }
+          await tx.payment.updateMany({
+            where: {
+              rideRequestId: member.rideRequestId,
+              status: "PENDING",
+            },
+            data: {
+              status: "PAID",
+              paidAt: now,
+            },
+          });
         }
 
         // Record immutable audit history entry (Architecture.md §5)

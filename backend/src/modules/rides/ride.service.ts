@@ -1,4 +1,4 @@
-import { RideStatus, Role, MembershipStatus, PoolStatus } from "@prisma/client";
+import { RideStatus, Role, MembershipStatus, PoolStatus, PaymentMethod, PaymentStatus } from "@prisma/client";
 import { prisma } from "../../db/prisma.js";
 import { AppError } from "../../middleware/errorHandler.js";
 import { fareService } from "../fares/fare.service.js";
@@ -20,9 +20,8 @@ export class RideService {
     createdAt: Date;
     updatedAt: Date;
     cancelledAt: Date | null;
-    // Rule 12 exception: Prisma's optional include result for payment has no exported named type;
-    // using `any` here avoids reimplementing internal Prisma relation types.
-    payment?: { method: any; status: any } | null;
+    // Prisma's optional include result for the payment relation
+    payment?: { method: PaymentMethod; status: PaymentStatus } | null;
   }): RideRequestResponse {
     return {
       id: ride.id,

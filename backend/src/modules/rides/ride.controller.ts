@@ -5,6 +5,9 @@ import { ApiSuccessResponse } from "../../shared/types/index.js";
 import { RideRequestResponse } from "./ride.types.js";
 import { AppError } from "../../middleware/errorHandler.js";
 
+// Derive audit history item type directly from the service to avoid any[]
+type RideHistoryItem = Awaited<ReturnType<typeof rideService.getRideHistory>>[number];
+
 export class RideController {
   // Create a new ride request
   public async createRide(
@@ -108,8 +111,7 @@ export class RideController {
   // Get status audit history for a ride request (Architecture.md §4)
   public async getRideHistory(
     req: Request,
-    // Rule 12 exception: history entries include Prisma nested changedBy join with no exported named type.
-    res: Response<ApiSuccessResponse<{ history: any[] }>>,
+    res: Response<ApiSuccessResponse<{ history: RideHistoryItem[] }>>,
     next: NextFunction
   ): Promise<void> {
     try {
