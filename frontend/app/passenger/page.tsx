@@ -227,7 +227,7 @@ export default function PassengerDashboardPage() {
   // Guard: Auth loading state to prevent unauthorized flash during hydration
   if (isAuthLoading && !user) {
     return (
-      <div className="min-h-screen bg-background text-foreground flex flex-col justify-between p-4 sm:p-6 lg:p-10 max-w-5xl mx-auto">
+      <div className="min-h-screen text-ink flex flex-col justify-between p-4 sm:p-6 lg:p-10 max-w-5xl mx-auto">
         <RideCardSkeleton />
       </div>
     );
@@ -236,26 +236,25 @@ export default function PassengerDashboardPage() {
   // Guard: Unauthorized state (Design.md §3)
   if (!isLoadingRides && (!user || user.role !== "PASSENGER")) {
     return (
-      <div className="min-h-screen flex items-center justify-center p-4 bg-background relative overflow-hidden">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
-        <div className="max-w-md w-full p-8 rounded-3xl bg-zinc-950/80 backdrop-blur-xl border border-zinc-800/80 text-center space-y-5 shadow-2xl relative z-10">
-          <div className="p-4 w-14 h-14 mx-auto rounded-2xl bg-rose-500/10 border border-rose-500/20 text-rose-400 flex items-center justify-center shadow-sm">
+      <div className="min-h-screen flex items-center justify-center p-4 relative overflow-hidden">
+        <div className="max-w-md w-full p-8 rounded-2xl glass-elevated border border-white text-center space-y-5 shadow-2xl relative z-10">
+          <div className="p-4 w-14 h-14 mx-auto rounded-2xl bg-danger/10 border border-danger/25 text-danger flex items-center justify-center shadow-sm">
             <Shield className="w-7 h-7" />
           </div>
           <div className="space-y-1">
-            <h2 className="text-xl font-bold text-white tracking-tight">Passenger Sign-In Required</h2>
-            <p className="text-xs sm:text-sm text-zinc-400 leading-relaxed">
+            <h2 className="text-xl font-bold text-ink tracking-tight">Passenger Sign-In Required</h2>
+            <p className="text-xs sm:text-sm text-ink-muted leading-relaxed">
               Please sign in as Nusrat, Rafiq, or Shirin to request rides and access this portal.
             </p>
           </div>
           <div className="pt-2 flex flex-col gap-2.5">
             <Link
               href="/auth/login"
-              className="py-3 px-4 rounded-xl bg-gradient-to-r from-emerald-400 to-teal-400 text-black font-semibold text-sm hover:from-emerald-300 hover:to-teal-300 transition-all shadow-glow-sm hover:shadow-glow"
+              className="py-3 px-5 rounded-full bg-black text-white font-semibold text-xs uppercase tracking-wider hover:bg-zinc-800 transition-all shadow-md"
             >
               Sign In to Passenger Account
             </Link>
-            <Link href="/" className="text-xs text-zinc-400 hover:text-white transition-colors">
+            <Link href="/" className="text-xs text-ink-muted hover:text-ink transition-colors">
               Return to Home
             </Link>
           </div>
@@ -265,33 +264,33 @@ export default function PassengerDashboardPage() {
   }
 
   return (
-    <div className="min-h-screen bg-background text-foreground flex flex-col justify-between p-4 sm:p-6 lg:p-10 max-w-5xl mx-auto">
+    <div className="min-h-screen text-ink flex flex-col justify-between p-4 sm:p-6 lg:p-10 max-w-5xl mx-auto">
       {/* Header */}
-      <header className="sticky top-4 z-40 mb-6 backdrop-blur-xl bg-zinc-950/80 border border-zinc-800/80 rounded-2xl shadow-2xl p-4 sm:p-5 flex flex-wrap items-center justify-between gap-4">
+      <header className="sticky top-3 sm:top-4 z-40 mb-6 glass border border-white/80 rounded-2xl shadow-card p-4 sm:p-5 flex flex-wrap items-center justify-between gap-4">
         <div className="flex items-center gap-3">
           <Link href="/" className="flex items-center gap-2.5 group">
-            <div className="w-9 h-9 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 flex items-center justify-center font-bold shadow-glow-sm group-hover:scale-105 transition-transform">
-              <Zap className="w-5 h-5 text-emerald-400" />
+            <div className="w-9 h-9 rounded-full bg-accent text-white flex items-center justify-center font-bold shadow-md shadow-accent/25 group-hover:scale-105 transition-transform">
+              <Zap className="w-4 h-4 fill-white" />
             </div>
             <div>
-              <span className="text-base sm:text-lg font-bold tracking-tight text-white block leading-tight">Dhaka Tesla Pool</span>
-              <span className="text-[10px] text-zinc-400 font-mono tracking-wider uppercase">Electric Fleet Network</span>
+              <span className="text-base sm:text-lg font-bold tracking-tight text-ink block leading-tight">Dhaka Tesla Pool</span>
+              <span className="text-[10px] text-ink-muted font-mono tracking-wider uppercase">Electric Fleet Network</span>
             </div>
           </Link>
-          <span className="hidden sm:inline-flex text-xs px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 font-medium">
+          <span className="hidden sm:inline-flex text-xs px-3 py-1 rounded-full bg-accent-soft text-accent border border-accent/25 font-semibold">
             Passenger Console
           </span>
         </div>
 
         <div className="flex items-center gap-3 sm:gap-4">
           <div className="text-right">
-            <span className="text-xs sm:text-sm font-semibold text-white block">{user?.name}</span>
-            <span className="text-[11px] text-emerald-400 font-mono">Passenger &bull; Active</span>
+            <span className="text-xs sm:text-sm font-semibold text-ink block">{user?.name}</span>
+            <span className="text-[11px] text-accent font-mono font-medium">Passenger &bull; Active</span>
           </div>
           <button
             onClick={logout}
             title="Sign Out"
-            className="p-2 sm:px-3 sm:py-2 rounded-xl bg-zinc-900/80 border border-zinc-800 text-zinc-400 hover:text-rose-400 hover:border-rose-500/30 hover:bg-rose-500/10 transition-all flex items-center gap-1.5 text-xs font-semibold cursor-pointer"
+            className="p-2 sm:px-4 sm:py-2 rounded-full bg-white/70 border border-[#d4d8ee] text-ink-muted hover:text-danger hover:border-danger/30 hover:bg-danger/10 transition-all flex items-center gap-1.5 text-xs font-semibold cursor-pointer shadow-sm"
           >
             <LogOut className="w-3.5 h-3.5" />
             <span className="hidden sm:inline">Sign Out</span>
@@ -303,7 +302,7 @@ export default function PassengerDashboardPage() {
       <main className="mb-8 space-y-6 sm:space-y-8 flex-1">
         {/* Error Notification */}
         {error && (
-          <div className="p-4 rounded-2xl bg-rose-500/10 border border-rose-500/25 text-rose-400 text-xs sm:text-sm flex items-center gap-3 shadow-lg">
+          <div className="p-4 rounded-2xl bg-danger/10 border border-danger/25 text-danger text-xs sm:text-sm flex items-center gap-3 shadow-sm">
             <AlertCircle className="w-5 h-5 shrink-0" />
             <span>{error}</span>
           </div>
@@ -313,41 +312,40 @@ export default function PassengerDashboardPage() {
         {isLoadingRides ? (
           <RideCardSkeleton />
         ) : activeRide ? (
-          <div className="p-5 sm:p-7 rounded-3xl bg-zinc-950/70 backdrop-blur-xl border border-emerald-500/30 space-y-6 shadow-2xl relative overflow-hidden">
-            <div className="absolute -top-16 -right-16 w-56 h-56 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
-            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-zinc-800/80 pb-5 relative z-10">
+          <div className="p-5 sm:p-7 rounded-2xl glass-elevated border border-white space-y-6 shadow-card relative overflow-hidden">
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-[#d4d8ee]/70 pb-5 relative z-10">
               <div>
-                <div className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-emerald-400 mb-1.5 px-2.5 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/20">
-                  <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                <div className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-accent mb-1.5 px-3 py-0.5 rounded-full bg-accent-soft border border-accent/30">
+                  <span className="w-2 h-2 rounded-full bg-accent animate-pulse" />
                   Active Ride Tracker
                 </div>
-                <h3 className="text-lg sm:text-xl font-bold text-white flex items-center gap-2 tracking-tight">
+                <h3 className="text-lg sm:text-xl font-bold text-ink flex items-center gap-2 tracking-tight">
                   <span>{activeRide.pickupZone}</span>
-                  <span className="text-emerald-400">&rarr;</span>
+                  <span className="text-accent">&rarr;</span>
                   <span>{activeRide.destinationZone}</span>
                 </h3>
               </div>
 
-              <div className="w-full sm:w-auto flex flex-wrap sm:flex-nowrap items-center justify-between sm:justify-end gap-3 pt-3 sm:pt-0 border-t border-zinc-800/40 sm:border-0">
+              <div className="w-full sm:w-auto flex flex-wrap sm:flex-nowrap items-center justify-between sm:justify-end gap-3 pt-3 sm:pt-0 border-t border-[#d4d8ee]/40 sm:border-0">
                 <div className="text-left sm:text-right">
-                  <span className="text-[11px] text-zinc-400 block">Individual Fare</span>
-                  <span className="text-lg sm:text-xl font-bold text-emerald-400 font-mono tracking-tight">{activeRide.formattedFare}</span>
+                  <span className="text-[11px] text-ink-muted block uppercase tracking-wider">Individual Fare</span>
+                  <span className="text-lg sm:text-xl font-bold text-accent font-mono tracking-tight">{activeRide.formattedFare}</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <button
                     type="button"
                     onClick={() => openRideHistory(activeRide.id)}
-                    className="px-3 py-2 rounded-xl bg-zinc-900/80 hover:bg-zinc-800 border border-zinc-800 hover:border-zinc-700 text-zinc-300 text-xs font-semibold transition-all flex items-center gap-1.5 cursor-pointer"
+                    className="px-4 py-2 rounded-full bg-white/70 hover:bg-white border border-[#d4d8ee] text-ink text-xs font-semibold uppercase tracking-wider transition-all flex items-center gap-1.5 cursor-pointer shadow-sm"
                     title="View chronological audit history of status transitions"
                   >
-                    <Clock className="w-3.5 h-3.5 text-emerald-400" />
+                    <Clock className="w-3.5 h-3.5 text-accent" />
                     Audit
                   </button>
                   <button
                     type="button"
                     onClick={handlePromptCancel}
                     disabled={isCancelling || activeRide.status === "STARTED"}
-                    className="px-3 py-2 rounded-xl bg-rose-500/10 border border-rose-500/20 text-rose-400 hover:bg-rose-500/20 hover:border-rose-500/30 text-xs font-semibold transition-all disabled:opacity-40 cursor-pointer"
+                    className="px-4 py-2 rounded-full bg-danger/10 border border-danger/25 text-danger hover:bg-danger/20 text-xs font-semibold uppercase tracking-wider transition-all disabled:opacity-40 cursor-pointer shadow-sm"
                     title={
                       activeRide.status === "STARTED"
                         ? "Rides in progress cannot be cancelled"
@@ -375,11 +373,10 @@ export default function PassengerDashboardPage() {
         {!activeRide && (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
             {/* Request Form */}
-            <div className="md:col-span-2 p-5 sm:p-7 rounded-3xl bg-zinc-950/70 backdrop-blur-xl border border-zinc-800/80 space-y-6 shadow-2xl relative overflow-hidden">
-              <div className="absolute -top-16 -left-16 w-56 h-56 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
+            <div className="md:col-span-2 p-5 sm:p-7 rounded-2xl glass border border-white/80 space-y-6 shadow-card relative overflow-hidden">
               <div className="relative z-10">
-                <h3 className="text-lg sm:text-xl font-bold text-white tracking-tight">Book Shared Pool Ride</h3>
-                <p className="text-xs sm:text-sm text-zinc-400 mt-1 leading-relaxed">
+                <h3 className="text-lg sm:text-xl font-bold text-ink tracking-tight">Book Shared Pool Ride</h3>
+                <p className="text-xs sm:text-sm text-ink-muted mt-1 leading-relaxed">
                   Share Bullet (3-seat EV) along compatible Dhaka corridors. Fares split automatically.
                 </p>
               </div>
@@ -388,46 +385,46 @@ export default function PassengerDashboardPage() {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   {/* Origin Zone */}
                   <div>
-                    <label className="block text-xs font-semibold text-zinc-300 uppercase tracking-wider mb-2">
+                    <label className="block text-xs font-semibold text-ink uppercase tracking-wider mb-2">
                       Pickup Zone
                     </label>
                     <div className="relative">
                       <select
                         value={pickupZone}
                         onChange={(e) => setPickupZone(e.target.value)}
-                        className="w-full px-4 py-3 rounded-xl bg-zinc-900/80 border border-zinc-800/90 text-white text-sm focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:border-emerald-400 transition-all appearance-none cursor-pointer"
+                        className="w-full px-4 py-3 rounded-xl bg-white/80 border border-[#d4d8ee] text-ink text-sm focus:outline-none focus:ring-2 focus:ring-accent focus:border-accent transition-all appearance-none cursor-pointer shadow-sm"
                       >
                         {zones.map((z) => (
-                          <option key={z.code} value={z.code} className="bg-zinc-900 text-white">
+                          <option key={z.code} value={z.code} className="bg-white text-ink">
                             {z.name}
                           </option>
                         ))}
                       </select>
-                      <div className="absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none text-zinc-400">
-                        <MapPin className="w-4 h-4 text-emerald-400" />
+                      <div className="absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none text-ink-muted">
+                        <MapPin className="w-4 h-4 text-accent" />
                       </div>
                     </div>
                   </div>
 
                   {/* Destination Zone */}
                   <div>
-                    <label className="block text-xs font-semibold text-zinc-300 uppercase tracking-wider mb-2">
+                    <label className="block text-xs font-semibold text-ink uppercase tracking-wider mb-2">
                       Destination Zone
                     </label>
                     <div className="relative">
                       <select
                         value={destinationZone}
                         onChange={(e) => setDestinationZone(e.target.value)}
-                        className="w-full px-4 py-3 rounded-xl bg-zinc-900/80 border border-zinc-800/90 text-white text-sm focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:border-emerald-400 transition-all appearance-none cursor-pointer"
+                        className="w-full px-4 py-3 rounded-xl bg-white/80 border border-[#d4d8ee] text-ink text-sm focus:outline-none focus:ring-2 focus:ring-accent focus:border-accent transition-all appearance-none cursor-pointer shadow-sm"
                       >
                         {zones.map((z) => (
-                          <option key={z.code} value={z.code} className="bg-zinc-900 text-white">
+                          <option key={z.code} value={z.code} className="bg-white text-ink">
                             {z.name}
                           </option>
                         ))}
                       </select>
-                      <div className="absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none text-zinc-400">
-                        <MapPin className="w-4 h-4 text-teal-400" />
+                      <div className="absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none text-ink-muted">
+                        <MapPin className="w-4 h-4 text-accent" />
                       </div>
                     </div>
                   </div>
@@ -435,7 +432,7 @@ export default function PassengerDashboardPage() {
 
                 {/* Seat Count Picker */}
                 <div>
-                  <label className="block text-xs font-semibold text-zinc-300 uppercase tracking-wider mb-2">
+                  <label className="block text-xs font-semibold text-ink uppercase tracking-wider mb-2">
                     Seats Required (Max 3 on Bullet)
                   </label>
                   <div className="grid grid-cols-3 gap-3">
@@ -445,10 +442,10 @@ export default function PassengerDashboardPage() {
                         whileTap={{ scale: 0.96 }}
                         type="button"
                         onClick={() => setSeatCount(num)}
-                        className={`py-3 rounded-xl border text-sm font-semibold transition-all duration-150 cursor-pointer flex items-center justify-center gap-1.5 ${
+                        className={`py-3 rounded-xl border text-sm font-semibold transition-all duration-150 cursor-pointer flex items-center justify-center gap-1.5 shadow-sm ${
                           seatCount === num
-                            ? "bg-gradient-to-r from-emerald-500/20 to-teal-500/20 border-emerald-400 text-emerald-300 shadow-glow-sm"
-                            : "bg-zinc-900/60 border-zinc-800/80 text-zinc-400 hover:border-zinc-700 hover:text-zinc-200"
+                            ? "bg-accent border-accent text-white shadow-md shadow-accent/25"
+                            : "bg-white/70 border-[#d4d8ee] text-ink-muted hover:border-accent/40 hover:text-ink"
                         }`}
                       >
                         <Users className="w-3.5 h-3.5" />
@@ -463,7 +460,7 @@ export default function PassengerDashboardPage() {
                   type="button"
                   onClick={handlePromptPayment}
                   disabled={isSubmitting || pickupZone === destinationZone}
-                  className="w-full py-4 px-5 rounded-xl bg-gradient-to-r from-emerald-400 to-teal-400 text-black font-bold text-sm sm:text-base hover:from-emerald-300 hover:to-teal-300 transition-all flex items-center justify-center gap-2.5 disabled:opacity-50 cursor-pointer shadow-glow-sm hover:shadow-glow focus:outline-none select-none"
+                  className="w-full py-4 px-6 rounded-full bg-black text-white hover:bg-zinc-800 font-bold text-xs sm:text-sm uppercase tracking-wider transition-all flex items-center justify-center gap-2.5 disabled:opacity-50 cursor-pointer shadow-pill focus:outline-none select-none"
                 >
                   {isSubmitting ? (
                     <Loader2 className="w-5 h-5 animate-spin" />
@@ -478,14 +475,13 @@ export default function PassengerDashboardPage() {
             </div>
 
             {/* Fare Breakdown Reveal (Design.md §4.5) */}
-            <div className="p-5 sm:p-7 rounded-3xl bg-zinc-950/70 backdrop-blur-xl border border-zinc-800/80 flex flex-col space-y-5 shadow-2xl relative overflow-hidden">
-              <div className="absolute -bottom-16 -right-16 w-48 h-48 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
-              <div className="flex items-center justify-between pb-3.5 border-b border-zinc-800/80 relative z-10">
-                <div className="flex items-center gap-2 text-white font-bold text-base">
-                  <Tag className="w-4 h-4 text-emerald-400" />
+            <div className="p-5 sm:p-7 rounded-2xl glass border border-white/80 flex flex-col space-y-5 shadow-card relative overflow-hidden">
+              <div className="flex items-center justify-between pb-3.5 border-b border-[#d4d8ee]/70 relative z-10">
+                <div className="flex items-center gap-2 text-ink font-bold text-base">
+                  <Tag className="w-4 h-4 text-accent" />
                   <span>Fare Estimate</span>
                 </div>
-                <span className="text-[11px] px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 font-medium">
+                <span className="text-[11px] px-2.5 py-0.5 rounded-full bg-accent-soft text-accent border border-accent/25 font-semibold">
                   20% Pool Active
                 </span>
               </div>
@@ -498,7 +494,7 @@ export default function PassengerDashboardPage() {
                 ) : isEstimating ? (
                   <FareBreakdownSkeleton />
                 ) : (
-                  <div className="py-12 text-center text-xs text-zinc-500">
+                  <div className="py-12 text-center text-xs text-ink-muted">
                     Select pickup and destination to view live fare calculation.
                   </div>
                 )}
@@ -508,43 +504,43 @@ export default function PassengerDashboardPage() {
         )}
 
         {/* RIDE HISTORY LIST */}
-        <div className="p-5 sm:p-7 rounded-3xl bg-zinc-950/70 backdrop-blur-xl border border-zinc-800/80 space-y-5 shadow-2xl relative overflow-hidden">
-          <div className="flex justify-between items-center pb-2 border-b border-zinc-800/80">
-            <h3 className="text-base font-bold text-white flex items-center gap-2">
-              <Clock className="w-4 h-4 text-emerald-400" />
+        <div className="p-5 sm:p-7 rounded-2xl glass border border-white/80 space-y-5 shadow-card relative overflow-hidden">
+          <div className="flex justify-between items-center pb-2 border-b border-[#d4d8ee]/70">
+            <h3 className="text-base font-bold text-ink flex items-center gap-2">
+              <Clock className="w-4 h-4 text-accent" />
               <span>Ride History</span>
             </h3>
-            <span className="text-xs text-zinc-500">{history.length} past rides</span>
+            <span className="text-xs text-ink-muted">{history.length} past rides</span>
           </div>
 
           {history.length === 0 ? (
-            <div className="py-10 text-center text-xs text-zinc-500">
+            <div className="py-10 text-center text-xs text-ink-muted">
               No previous rides recorded. Your completed or cancelled trips will be archived here.
             </div>
           ) : (
-            <div className="space-y-2">
+            <div className="space-y-2.5">
               {history.map((ride) => (
                 <div
                   key={ride.id}
-                  className="p-3.5 rounded-xl bg-zinc-900/40 hover:bg-zinc-900/80 border border-zinc-800/60 hover:border-zinc-700/80 transition-all flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 text-xs"
+                  className="p-3.5 rounded-xl bg-white/70 hover:bg-white border border-[#d4d8ee] transition-all flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 text-xs shadow-sm"
                 >
                   <div className="space-y-0.5">
-                    <span className="font-semibold text-white block">
+                    <span className="font-semibold text-ink block">
                       {ride.pickupZone} &rarr; {ride.destinationZone}
                     </span>
-                    <span className="text-zinc-500 text-[11px]">
+                    <span className="text-ink-muted text-[11px]">
                       {new Date(ride.createdAt).toLocaleDateString()} &bull; {ride.seatCount}{" "}
                       {ride.seatCount === 1 ? "seat" : "seats"} &bull; {ride.estimatedDistanceKm} km
                     </span>
                   </div>
 
-                  <div className="w-full sm:w-auto flex items-center justify-between sm:justify-end gap-3 pt-2 sm:pt-0 border-t border-zinc-800/40 sm:border-0">
-                    <span className="font-mono text-emerald-400 font-semibold">{ride.formattedFare}</span>
+                  <div className="w-full sm:w-auto flex items-center justify-between sm:justify-end gap-3 pt-2 sm:pt-0 border-t border-[#d4d8ee]/40 sm:border-0">
+                    <span className="font-mono text-accent font-bold">{ride.formattedFare}</span>
                     <span
                       className={`px-2.5 py-0.5 rounded-full text-[10px] font-semibold uppercase tracking-wider ${
                         ride.status === "COMPLETED"
-                          ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20"
-                          : "bg-red-500/10 text-red-400 border border-red-500/20"
+                          ? "bg-success-soft text-success border border-success/30"
+                          : "bg-danger/10 text-danger border border-danger/25"
                       }`}
                     >
                       {ride.status}
@@ -552,7 +548,7 @@ export default function PassengerDashboardPage() {
                     <button
                       type="button"
                       onClick={() => openRideHistory(ride.id)}
-                      className="text-zinc-400 hover:text-white p-1.5 rounded-lg hover:bg-zinc-800 transition-colors text-xs cursor-pointer"
+                      className="text-ink-muted hover:text-ink p-1.5 rounded-lg hover:bg-black/5 transition-colors text-xs cursor-pointer"
                       title="View transition audit log"
                     >
                       <Clock className="w-3.5 h-3.5" />
@@ -567,31 +563,30 @@ export default function PassengerDashboardPage() {
 
       {/* Status History / Audit Trail Modal (Phase 6) */}
       {historyModalOpen && (
-        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-3 sm:p-4 animate-in fade-in duration-200">
-          <div className="w-full max-w-lg max-h-[90vh] overflow-y-auto rounded-3xl bg-zinc-950/95 border border-zinc-800/90 p-5 sm:p-7 space-y-5 shadow-2xl relative overflow-hidden">
-            <div className="absolute -top-12 -right-12 w-44 h-44 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
-            <div className="flex justify-between items-center border-b border-zinc-800/80 pb-4 relative z-10">
+        <div className="fixed inset-0 z-50 bg-slate-900/40 backdrop-blur-md flex items-center justify-center p-3 sm:p-4 animate-in fade-in duration-200">
+          <div className="w-full max-w-lg max-h-[90vh] overflow-y-auto rounded-2xl glass-elevated border border-white p-5 sm:p-7 space-y-5 shadow-2xl relative overflow-hidden">
+            <div className="flex justify-between items-center border-b border-[#d4d8ee]/70 pb-4 relative z-10">
               <div className="flex items-center gap-2.5">
-                <div className="w-8 h-8 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 flex items-center justify-center">
+                <div className="w-8 h-8 rounded-lg bg-accent-soft text-accent flex items-center justify-center">
                   <Clock className="w-4 h-4" />
                 </div>
                 <div>
-                  <h3 className="font-bold text-white text-base tracking-tight">Ride Transition Audit Trail</h3>
-                  <span className="text-[11px] text-zinc-400">Deterministic state timeline</span>
+                  <h3 className="font-bold text-ink text-base tracking-tight">Ride Transition Audit Trail</h3>
+                  <span className="text-[11px] text-ink-muted">Deterministic state timeline</span>
                 </div>
               </div>
               <button
                 type="button"
                 onClick={() => setHistoryModalOpen(false)}
-                className="p-1.5 rounded-lg text-zinc-400 hover:text-white hover:bg-zinc-800 transition-colors text-sm cursor-pointer"
+                className="p-1.5 rounded-lg text-ink-muted hover:text-ink hover:bg-black/5 transition-colors text-sm cursor-pointer"
               >
                 ✕
               </button>
             </div>
 
             {isLoadingHistory ? (
-              <div className="py-10 flex flex-col items-center justify-center gap-2 text-zinc-400 text-xs">
-                <Loader2 className="w-5 h-5 animate-spin text-emerald-400" />
+              <div className="py-10 flex flex-col items-center justify-center gap-2 text-ink-muted text-xs">
+                <Loader2 className="w-5 h-5 animate-spin text-accent" />
                 <span>Loading transition history...</span>
               </div>
             ) : selectedRideHistory && selectedRideHistory.length > 0 ? (
@@ -599,40 +594,40 @@ export default function PassengerDashboardPage() {
                 {selectedRideHistory.map((item) => (
                   <div
                     key={item.id}
-                    className="p-3.5 rounded-xl bg-zinc-900/70 border border-zinc-800/80 space-y-1.5 text-xs shadow-sm"
+                    className="p-3.5 rounded-xl bg-white/70 border border-[#d4d8ee] space-y-1.5 text-xs shadow-sm"
                   >
                     <div className="flex justify-between items-center">
-                      <span className="font-bold text-white flex items-center gap-2">
-                        <span className="w-2 h-2 rounded-full bg-emerald-400 shadow-glow-sm" />
+                      <span className="font-bold text-ink flex items-center gap-2">
+                        <span className="w-2 h-2 rounded-full bg-accent" />
                         <span>{item.fromStatus}</span>
-                        <span className="text-emerald-400">&rarr;</span>
+                        <span className="text-accent">&rarr;</span>
                         <span>{item.toStatus}</span>
                       </span>
-                      <span className="text-[11px] text-zinc-400 font-mono">
+                      <span className="text-[11px] text-ink-muted font-mono">
                         {new Date(item.createdAt).toLocaleTimeString()}
                       </span>
                     </div>
                     {item.reason && (
-                      <p className="text-zinc-400 text-[11px] italic pl-3 border-l-2 border-emerald-500/30">
+                      <p className="text-ink-muted text-[11px] italic pl-3 border-l-2 border-accent/40">
                         &quot;{item.reason}&quot;
                       </p>
                     )}
-                    <div className="text-[10px] text-zinc-500 pt-1 flex justify-between items-center">
-                      <span>Actor: <strong className="text-zinc-400 font-semibold">{item.changedByName}</strong></span>
+                    <div className="text-[10px] text-ink-muted/80 pt-1 flex justify-between items-center">
+                      <span>Actor: <strong className="text-ink font-semibold">{item.changedByName}</strong></span>
                       <span className="font-mono">{new Date(item.createdAt).toLocaleDateString()}</span>
                     </div>
                   </div>
                 ))}
               </div>
             ) : (
-              <p className="py-8 text-center text-xs text-zinc-500">No status audit entries found.</p>
+              <p className="py-8 text-center text-xs text-ink-muted">No status audit entries found.</p>
             )}
 
             <div className="pt-2 flex justify-end relative z-10">
               <button
                 type="button"
                 onClick={() => setHistoryModalOpen(false)}
-                className="px-5 py-2.5 rounded-xl bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 hover:border-zinc-700 text-white text-xs font-semibold transition-all cursor-pointer"
+                className="px-6 py-2.5 rounded-full bg-black hover:bg-zinc-800 text-white text-xs font-semibold uppercase tracking-wider transition-all cursor-pointer shadow-sm"
               >
                 Close
               </button>
@@ -673,13 +668,13 @@ export default function PassengerDashboardPage() {
       />
 
       {/* Footer */}
-      <footer className="pt-8 border-t border-zinc-800/80 flex flex-col sm:flex-row justify-between items-center gap-3 text-xs text-zinc-500">
+      <footer className="pt-8 border-t border-[#d4d8ee] flex flex-col sm:flex-row justify-between items-center gap-3 text-xs text-ink-muted">
         <p>&copy; {new Date().getFullYear()} Dhaka Tesla Pool &bull; Passenger Corridor Network.</p>
         <div className="flex gap-4">
-          <Link href="/" className="hover:text-emerald-400 transition-colors">
+          <Link href="/" className="hover:text-ink transition-colors font-medium">
             Home
           </Link>
-          <Link href="/auth/login" className="hover:text-emerald-400 transition-colors">
+          <Link href="/auth/login" className="hover:text-ink transition-colors font-medium">
             Switch Account
           </Link>
         </div>

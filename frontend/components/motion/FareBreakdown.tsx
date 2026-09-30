@@ -28,40 +28,40 @@ export function FareBreakdown({ fare }: FareBreakdownProps) {
       variants={containerVariants}
       initial="initial"
       animate="animate"
-      className="space-y-4 pt-1"
+      className="space-y-3.5 pt-1"
     >
       {/* Route Corridor Info Chip */}
       <motion.div
         variants={itemVariants}
-        className="p-3 rounded-xl bg-zinc-900/70 border border-white/[0.06] flex items-center justify-between text-xs"
+        className="p-3 rounded-xl bg-white/60 border border-[#d4d8ee] flex items-center justify-between text-xs shadow-sm"
       >
-        <span className="flex items-center gap-2 text-zinc-400">
-          <Navigation className="w-3.5 h-3.5 text-emerald-400" />
+        <span className="flex items-center gap-2 text-ink-muted">
+          <Navigation className="w-3.5 h-3.5 text-accent" />
           <span>Estimated Trip Distance</span>
         </span>
-        <span className="font-mono text-zinc-200 font-semibold px-2 py-0.5 rounded-md bg-zinc-800/80 border border-zinc-700/60">
+        <span className="font-mono text-ink font-semibold px-2 py-0.5 rounded-md bg-[#eef0fb] border border-[#d4d8ee]">
           {fare.distanceKm} km
         </span>
       </motion.div>
 
       {/* Fare Components Breakdown */}
-      <div className="space-y-2.5 text-xs divide-y divide-white/[0.05] p-3 rounded-xl bg-zinc-900/40 border border-white/[0.04]">
-        <motion.div variants={itemVariants} className="flex justify-between items-center text-zinc-400 pt-0.5">
+      <div className="space-y-2.5 text-xs divide-y divide-[#d4d8ee]/60 p-3.5 rounded-xl bg-white/70 border border-[#d4d8ee] shadow-sm">
+        <motion.div variants={itemVariants} className="flex justify-between items-center text-ink-muted pt-0.5">
           <span>Base Flag Fare</span>
-          <span className="font-mono text-zinc-200 font-semibold">{fare.formattedBdt.baseFare}</span>
+          <span className="font-mono text-ink font-semibold">{fare.formattedBdt.baseFare}</span>
         </motion.div>
 
-        <motion.div variants={itemVariants} className="flex justify-between items-center text-zinc-400 pt-2.5">
+        <motion.div variants={itemVariants} className="flex justify-between items-center text-ink-muted pt-2.5">
           <span>Distance Rate Charge</span>
-          <span className="font-mono text-zinc-200 font-semibold">{fare.formattedBdt.distanceCharge}</span>
+          <span className="font-mono text-ink font-semibold">{fare.formattedBdt.distanceCharge}</span>
         </motion.div>
 
-        <motion.div variants={itemVariants} className="flex justify-between items-center text-emerald-400 pt-2.5">
+        <motion.div variants={itemVariants} className="flex justify-between items-center text-success pt-2.5">
           <span className="flex items-center gap-1.5 font-medium">
             <Tag className="w-3.5 h-3.5" />
             <span>Corridor Pooling Discount (20%)</span>
           </span>
-          <span className="font-mono font-bold px-1.5 py-0.5 rounded bg-emerald-500/10 border border-emerald-500/20 text-emerald-300">
+          <span className="font-mono font-bold px-2 py-0.5 rounded-full bg-success-soft border border-success/30 text-success">
             -{fare.formattedBdt.discount}
           </span>
         </motion.div>
@@ -70,18 +70,18 @@ export function FareBreakdown({ fare }: FareBreakdownProps) {
       {/* Individual Payable Total Highlight Box */}
       <motion.div
         variants={itemVariants}
-        className="p-3.5 sm:p-4 rounded-xl bg-gradient-to-r from-emerald-500/15 via-emerald-500/10 to-transparent border border-emerald-500/30 flex items-center justify-between gap-3 shadow-lg shadow-emerald-500/5 relative overflow-hidden"
+        className="p-4 rounded-xl bg-accent-soft/70 border border-accent/30 flex items-center justify-between gap-3 shadow-md relative overflow-hidden"
       >
         <div className="space-y-0.5">
-          <span className="text-xs sm:text-sm font-bold text-white block">
+          <span className="text-xs sm:text-sm font-bold text-ink block">
             Individual Payable Total
           </span>
-          <span className="text-[11px] text-zinc-400 block">
+          <span className="text-[11px] text-ink-muted block">
             Guaranteed whole-number fare
           </span>
         </div>
 
-        <span className="font-mono text-emerald-400 text-xl sm:text-2xl font-black tracking-tight shrink-0 drop-shadow-[0_0_12px_rgba(52,211,153,0.3)]">
+        <span className="font-mono text-accent text-xl sm:text-2xl font-black tracking-tight shrink-0 drop-shadow-sm">
           {fare.formattedBdt.finalFare}
         </span>
       </motion.div>

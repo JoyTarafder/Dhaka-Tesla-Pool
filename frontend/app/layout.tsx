@@ -15,6 +15,7 @@ export const metadata: Metadata = {
 };
 
 import { AuthProvider } from "@/context/auth-context";
+import { AppMotionConfig } from "@/components/motion/AppMotionConfig";
 
 export default function RootLayout({
   children,
@@ -22,9 +23,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className="dark">
-      <body className={`${inter.variable} bg-background text-foreground antialiased min-h-screen`}>
-        <AuthProvider>{children}</AuthProvider>
+    <html lang="en">
+      <body className={`${inter.variable} text-ink antialiased min-h-screen selection:bg-accent/20`}>
+        <AuthProvider>
+          <AppMotionConfig>{children}</AppMotionConfig>
+        </AuthProvider>
       </body>
     </html>
   );

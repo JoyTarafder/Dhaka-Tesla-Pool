@@ -30,9 +30,9 @@ export function StatusStepper({ currentStatus }: StatusStepperProps) {
 
   if (isCancelled) {
     return (
-      <div className="p-4 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-xs flex items-center justify-between">
+      <div className="p-4 rounded-2xl bg-danger/10 border border-danger/25 text-danger text-xs flex items-center justify-between shadow-sm">
         <span className="font-bold">Ride Request Cancelled</span>
-        <span className="text-[11px] text-zinc-400">Reserved seats have been released back to Bullet</span>
+        <span className="text-[11px] text-ink-muted">Reserved seats released back to Bullet</span>
       </div>
     );
   }
@@ -40,12 +40,12 @@ export function StatusStepper({ currentStatus }: StatusStepperProps) {
   return (
     <div className="relative pt-3 pb-2">
       {/* Horizontal Connector Line running directly through centers of step icons */}
-      <div className="absolute top-7 left-[8.33%] right-[8.33%] h-1 bg-zinc-800/90 -translate-y-1/2 rounded-full overflow-hidden z-0">
+      <div className="absolute top-7 left-[8.33%] right-[8.33%] h-1.5 bg-[#d4d8ee] -translate-y-1/2 rounded-full overflow-hidden z-0 shadow-inner">
         <motion.div
-          className="h-full bg-gradient-to-r from-emerald-500 via-emerald-400 to-emerald-300 rounded-full shadow-[0_0_12px_rgba(52,211,153,0.6)]"
+          className="h-full bg-accent rounded-full shadow-[0_0_12px_rgba(59,130,246,0.5)]"
           initial={{ width: 0 }}
           animate={{ width: `${progressPercent}%` }}
-          transition={{ duration: 0.5, ease: "easeOut" }}
+          transition={{ duration: 0.4, ease: "easeOut" }}
         />
       </div>
 
@@ -66,22 +66,22 @@ export function StatusStepper({ currentStatus }: StatusStepperProps) {
                 transition={{ duration: 0.35 }}
                 className={`w-8 h-8 rounded-full flex items-center justify-center transition-all duration-300 relative ${
                   isCurrent
-                    ? "bg-gradient-to-tr from-emerald-400 to-emerald-300 text-zinc-950 font-bold shadow-[0_0_18px_rgba(52,211,153,0.5)] ring-2 ring-emerald-400/60 ring-offset-2 ring-offset-zinc-950"
+                    ? "bg-accent text-white font-bold shadow-[0_0_16px_rgba(59,130,246,0.45)] ring-2 ring-accent/40 ring-offset-2 ring-offset-white"
                     : isPassed
-                    ? "bg-zinc-950 text-emerald-400 border-2 border-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.25)]"
-                    : "bg-zinc-950 border border-zinc-800 text-zinc-600"
+                    ? "bg-white text-accent border-2 border-accent shadow-sm"
+                    : "bg-white/90 border border-[#d4d8ee] text-[#8e95a5]"
                 }`}
               >
                 <Icon className="w-4 h-4" />
               </motion.div>
 
               <span
-                className={`text-[9px] sm:text-[11px] font-medium tracking-tight block truncate max-w-full transition-colors ${
+                className={`text-[9px] sm:text-[11px] tracking-tight block truncate max-w-full transition-colors ${
                   isCurrent
-                    ? "text-emerald-300 font-bold"
+                    ? "text-accent font-bold"
                     : isPassed
-                    ? "text-zinc-300 font-medium"
-                    : "text-zinc-600"
+                    ? "text-ink font-semibold"
+                    : "text-ink-muted"
                 }`}
               >
                 {step.label}

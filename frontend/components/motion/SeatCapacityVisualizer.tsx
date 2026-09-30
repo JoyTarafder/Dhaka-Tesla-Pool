@@ -24,36 +24,36 @@ export function SeatCapacityVisualizer({
             layout
             initial={false}
             animate={{
-              scale: isOccupied ? [1, 1.12, 1] : 1,
+              scale: isOccupied ? [1, 1.14, 1] : 1,
             }}
             transition={{ duration: 0.3, ease: "easeOut" }}
             className={`w-11 h-11 rounded-xl flex flex-col items-center justify-center text-xs font-bold border transition-all duration-300 relative ${
               isOccupied
-                ? "bg-gradient-to-b from-emerald-300 to-emerald-400 border-emerald-300 text-zinc-950 shadow-[0_0_18px_rgba(52,211,153,0.35)]"
-                : "bg-zinc-900/80 border-white/[0.08] text-zinc-500 hover:border-zinc-700"
+                ? "bg-accent border-accent text-white shadow-[0_4px_16px_rgba(59,130,246,0.35)]"
+                : "bg-white/80 border-[#d4d8ee] text-ink-muted hover:border-accent/40"
             }`}
             title={`Seat ${index + 1}: ${isOccupied ? "Occupied" : "Available"}`}
           >
             <span className="font-mono text-xs font-extrabold">S{index + 1}</span>
-            <span className={`text-[9px] font-semibold tracking-tighter ${isOccupied ? "text-zinc-900/80" : "text-zinc-600"}`}>
+            <span className={`text-[9px] font-semibold tracking-tighter ${isOccupied ? "text-white/90" : "text-ink-muted/80"}`}>
               {isOccupied ? "BOOKED" : "OPEN"}
             </span>
             {isOccupied && (
-              <span className="absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-emerald-300 border-2 border-zinc-950" />
+              <span className="absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-accent border-2 border-white" />
             )}
           </motion.div>
         ))}
       </div>
 
       <div className="pl-1 flex items-center gap-2">
-        <span className={`px-2.5 py-1 rounded-full text-xs font-semibold tracking-wide uppercase border ${
+        <span className={`px-3 py-1 rounded-full text-xs font-semibold tracking-wide uppercase border ${
           occupiedSeats === totalCapacity
-            ? "bg-red-500/10 border-red-500/25 text-red-400"
+            ? "bg-danger/10 border-danger/30 text-danger"
             : occupiedSeats > 0
-            ? "bg-emerald-500/10 border-emerald-500/25 text-emerald-400"
-            : "bg-zinc-800/80 border-zinc-700 text-zinc-400"
+            ? "bg-accent-soft border-accent/30 text-accent"
+            : "bg-white/60 border-[#d4d8ee] text-ink-muted"
         }`}>
-          {occupiedSeats === totalCapacity ? "Full Capacity" : `${occupiedSeats} / ${totalCapacity} Booked`}
+          {occupiedSeats === totalCapacity ? "Full Capacity (3/3)" : `${occupiedSeats} / ${totalCapacity} Booked`}
         </span>
       </div>
     </div>

@@ -41,41 +41,38 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="h-screen w-full flex items-center justify-center p-3 sm:p-4 bg-background overflow-hidden relative">
-      {/* Background ambient lighting */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
-
-      <div className="w-full max-w-md bg-zinc-950/85 backdrop-blur-2xl border border-white/[0.1] p-5 sm:p-7 rounded-2xl shadow-[0_20px_60px_rgba(0,0,0,0.8)] space-y-3.5 sm:space-y-4 max-h-[96vh] overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] relative z-10">
+    <div className="h-screen w-full flex items-center justify-center p-3 sm:p-4 overflow-hidden relative text-ink">
+      <div className="w-full max-w-md glass-card border border-white/80 p-6 sm:p-8 rounded-3xl shadow-[0_20px_50px_rgba(20,25,45,0.08)] space-y-4 max-h-[96vh] overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] relative z-10">
         {/* Navigation back to home */}
         <div className="flex justify-between items-center">
           <Link
             href="/"
-            className="inline-flex items-center gap-1.5 text-xs text-zinc-400 hover:text-white transition-colors py-1 px-2 rounded-lg hover:bg-white/[0.05] border border-transparent hover:border-white/[0.05]"
+            className="inline-flex items-center gap-1.5 text-xs text-ink-muted hover:text-ink font-medium transition-colors py-1 px-2 rounded-full hover:bg-white/60"
           >
             <ArrowLeft className="w-3.5 h-3.5" />
             <span>Back to Home</span>
           </Link>
-          <span className="text-[10px] sm:text-[11px] font-mono text-emerald-400/80 uppercase tracking-widest font-semibold">Dhaka Tesla Pool</span>
+          <span className="text-[10px] sm:text-[11px] font-mono text-accent uppercase tracking-widest font-bold">Dhaka Tesla Pool</span>
         </div>
 
         <div className="text-center space-y-1.5">
-          <div className="inline-flex p-2.5 rounded-2xl bg-gradient-to-tr from-emerald-500/20 to-emerald-400/10 border border-emerald-500/30 text-emerald-400 mb-0.5 shadow-[0_0_15px_rgba(52,211,153,0.2)]">
-            <Zap className="w-5 h-5 fill-emerald-400/20" />
+          <div className="inline-flex p-2.5 rounded-full bg-black text-white shadow-sm mb-1">
+            <Zap className="w-5 h-5 fill-white" />
           </div>
-          <h2 className="text-xl sm:text-2xl font-black tracking-tight text-white">Sign In</h2>
-          <p className="text-xs text-zinc-400">Enter your credentials or choose a test persona</p>
+          <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-ink">Sign In</h2>
+          <p className="text-xs text-ink-muted">Enter your credentials or choose a test persona</p>
         </div>
 
         {error && (
-          <div className="p-3 rounded-xl bg-red-500/10 border border-red-500/25 text-red-400 text-xs flex items-center gap-2.5">
+          <div className="p-3.5 rounded-2xl glass-elevated border-l-4 border-l-danger text-danger text-xs flex items-center gap-2.5 shadow-sm">
             <AlertCircle className="w-4 h-4 shrink-0" />
-            <span>{error}</span>
+            <span className="font-medium">{error}</span>
           </div>
         )}
 
-        <form onSubmit={handleSubmit} className="space-y-3">
+        <form onSubmit={handleSubmit} className="space-y-3.5">
           <div>
-            <label className="block text-[11px] font-bold text-zinc-300 uppercase tracking-wider mb-1.5">
+            <label className="block text-[11px] font-bold text-ink uppercase tracking-wider mb-1.5">
               Email Address
             </label>
             <input
@@ -84,12 +81,12 @@ export default function LoginPage() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="nusrat@example.com"
-              className="w-full px-3.5 py-2.5 rounded-xl bg-zinc-900/60 border border-white/[0.08] text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-emerald-400/30 focus:border-emerald-400/60 text-sm transition-all"
+              className="w-full px-4 py-2.5 rounded-2xl bg-white/80 border border-[#d4d8ee] text-ink placeholder:text-ink-muted/50 focus:outline-none focus:ring-2 focus:ring-accent/20 focus:border-accent text-sm transition-all"
             />
           </div>
 
           <div>
-            <label className="block text-[11px] font-bold text-zinc-300 uppercase tracking-wider mb-1.5">
+            <label className="block text-[11px] font-bold text-ink uppercase tracking-wider mb-1.5">
               Password
             </label>
             <div className="relative">
@@ -99,13 +96,13 @@ export default function LoginPage() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"
-                className="w-full pl-3.5 pr-10 py-2.5 rounded-xl bg-zinc-900/60 border border-white/[0.08] text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-emerald-400/30 focus:border-emerald-400/60 text-sm transition-all"
+                className="w-full pl-4 pr-10 py-2.5 rounded-2xl bg-white/80 border border-[#d4d8ee] text-ink placeholder:text-ink-muted/50 focus:outline-none focus:ring-2 focus:ring-accent/20 focus:border-accent text-sm transition-all"
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
                 aria-label={showPassword ? "Hide password" : "Show password"}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-white transition-colors p-1 rounded-md focus:outline-none"
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-ink-muted hover:text-ink transition-colors p-1 rounded-md focus:outline-none"
               >
                 {showPassword ? (
                   <EyeOff className="w-4 h-4" />
@@ -119,7 +116,7 @@ export default function LoginPage() {
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full py-2.5 px-4 rounded-xl bg-gradient-to-r from-emerald-400 to-emerald-300 text-zinc-950 font-bold hover:from-emerald-300 hover:to-emerald-200 transition-all flex items-center justify-center gap-2 disabled:opacity-50 text-sm mt-1.5 shadow-[0_0_20px_rgba(52,211,153,0.3)] active:scale-[0.98]"
+            className="w-full py-3 px-6 rounded-full bg-black text-white font-semibold hover:bg-zinc-800 transition-all flex items-center justify-center gap-2 disabled:opacity-50 text-xs uppercase tracking-wider mt-2 shadow-[0_8px_24px_rgba(0,0,0,0.15)] active:scale-[0.98] cursor-pointer"
           >
             {isLoading && <Loader2 className="w-4 h-4 animate-spin" />}
             {isLoading ? "Signing in..." : "Sign In"}
@@ -127,50 +124,50 @@ export default function LoginPage() {
         </form>
 
         {/* Demo Cast Quick Fill Section */}
-        <div className="pt-3 border-t border-white/[0.08] space-y-2">
-          <p className="text-[10px] sm:text-[11px] font-bold text-zinc-400 text-center uppercase tracking-wider">
+        <div className="pt-3 border-t border-[#d4d8ee]/70 space-y-2">
+          <p className="text-[10px] sm:text-[11px] font-bold text-ink-muted text-center uppercase tracking-wider">
             Quick Persona Login (Evaluation Presets)
           </p>
           <div className="grid grid-cols-2 gap-2 text-xs">
             <button
               type="button"
               onClick={() => fillCredentials("nusrat@example.com")}
-              className="p-2 sm:p-2.5 rounded-xl bg-zinc-900/60 hover:bg-zinc-800/80 border border-white/[0.06] hover:border-emerald-500/30 text-left transition-all group"
+              className="p-2.5 rounded-2xl bg-white/70 hover:bg-white border border-white/90 text-left transition-all group shadow-sm"
             >
-              <span className="font-bold text-white block text-xs group-hover:text-emerald-300 transition-colors">Nusrat</span>
-              <span className="text-zinc-500 text-[10px] block leading-tight">Passenger (Banani)</span>
+              <span className="font-bold text-ink block text-xs group-hover:text-accent transition-colors">Nusrat</span>
+              <span className="text-ink-muted text-[10px] block leading-tight">Passenger (Banani)</span>
             </button>
             <button
               type="button"
               onClick={() => fillCredentials("rafiq@example.com")}
-              className="p-2 sm:p-2.5 rounded-xl bg-zinc-900/60 hover:bg-zinc-800/80 border border-white/[0.06] hover:border-emerald-500/30 text-left transition-all group"
+              className="p-2.5 rounded-2xl bg-white/70 hover:bg-white border border-white/90 text-left transition-all group shadow-sm"
             >
-              <span className="font-bold text-white block text-xs group-hover:text-emerald-300 transition-colors">Rafiq</span>
-              <span className="text-zinc-500 text-[10px] block leading-tight">Passenger (Gulshan)</span>
+              <span className="font-bold text-ink block text-xs group-hover:text-accent transition-colors">Rafiq</span>
+              <span className="text-ink-muted text-[10px] block leading-tight">Passenger (Gulshan)</span>
             </button>
             <button
               type="button"
               onClick={() => fillCredentials("shirin@example.com")}
-              className="p-2 sm:p-2.5 rounded-xl bg-zinc-900/60 hover:bg-zinc-800/80 border border-white/[0.06] hover:border-emerald-500/30 text-left transition-all group"
+              className="p-2.5 rounded-2xl bg-white/70 hover:bg-white border border-white/90 text-left transition-all group shadow-sm"
             >
-              <span className="font-bold text-white block text-xs group-hover:text-emerald-300 transition-colors">Shirin</span>
-              <span className="text-zinc-500 text-[10px] block leading-tight">Passenger (Racer)</span>
+              <span className="font-bold text-ink block text-xs group-hover:text-accent transition-colors">Shirin</span>
+              <span className="text-ink-muted text-[10px] block leading-tight">Passenger (Racer)</span>
             </button>
             <button
               type="button"
               onClick={() => fillCredentials("jashim@example.com")}
-              className="p-2 sm:p-2.5 rounded-xl bg-zinc-900/60 hover:bg-zinc-800/80 border border-emerald-500/20 hover:border-emerald-500/40 text-left transition-all group"
+              className="p-2.5 rounded-2xl bg-accent/10 hover:bg-accent/15 border border-accent/30 text-left transition-all group shadow-sm"
             >
-              <span className="font-bold text-emerald-400 block text-xs group-hover:text-emerald-300 transition-colors">Jashim</span>
-              <span className="text-zinc-500 text-[10px] block leading-tight">Driver (Bullet EV)</span>
+              <span className="font-bold text-accent block text-xs group-hover:text-blue-600 transition-colors">Jashim</span>
+              <span className="text-ink-muted text-[10px] block leading-tight">Driver (Bullet EV)</span>
             </button>
           </div>
         </div>
 
-        <div className="pt-2 border-t border-white/[0.08] flex items-center justify-center text-center text-xs text-zinc-400">
+        <div className="pt-2 border-t border-[#d4d8ee]/70 flex items-center justify-center text-center text-xs text-ink-muted">
           <div>
             Don&apos;t have an account?{" "}
-            <Link href="/auth/register" className="text-emerald-400 hover:text-emerald-300 font-semibold hover:underline">
+            <Link href="/auth/register" className="text-accent hover:text-blue-600 font-semibold hover:underline">
               Register here
             </Link>
           </div>

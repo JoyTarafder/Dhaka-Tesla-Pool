@@ -8,27 +8,42 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        background: "#09090b",
-        foreground: "#f4f4f5",
-        card: {
-          DEFAULT: "#111215",
-          elevated: "#181a1f",
-          foreground: "#f4f4f5",
+        ink: {
+          DEFAULT: "#0b0b0c",
+          muted: "#4b5160",
         },
-        border: "#23262d",
         accent: {
-          DEFAULT: "#34d399", // Electric emerald
-          hover: "#10b981",
-          foreground: "#09090b",
+          DEFAULT: "#3b82f6", // Electric blue
+          hover: "#2563eb",
+          soft: "#dbeafe",
+          foreground: "#ffffff",
+        },
+        success: {
+          DEFAULT: "#10b981", // Emerald
+          soft: "#d1fae5",
+        },
+        danger: {
+          DEFAULT: "#e11d48", // Rose
+          soft: "#ffe4e6",
+        },
+        "seat-empty": "#d4d8ee",
+        glass: {
+          DEFAULT: "rgba(255, 255, 255, 0.52)",
+          border: "rgba(255, 255, 255, 0.75)",
+          elevated: "rgba(255, 255, 255, 0.7)",
         },
       },
       boxShadow: {
-        'glow-sm': '0 0 15px -3px rgba(16, 185, 129, 0.18)',
-        'glow': '0 0 25px -5px rgba(16, 185, 129, 0.25)',
-        'glass': '0 8px 32px 0 rgba(0, 0, 0, 0.37)',
+        card: "0 10px 40px -12px rgba(59, 70, 140, 0.22)",
+        "card-hover": "0 16px 48px -12px rgba(59, 70, 140, 0.28)",
+        "glow-accent": "0 0 25px -4px rgba(59, 130, 246, 0.35)",
+        pill: "0 4px 14px 0 rgba(0, 0, 0, 0.12)",
       },
       fontFamily: {
         sans: ["var(--font-inter)", "system-ui", "-apple-system", "sans-serif"],
+      },
+      borderRadius: {
+        "16": "16px",
       },
     },
   },
