@@ -5,6 +5,7 @@ import { app } from "../../app.js";
 import { prisma } from "../../db/prisma.js";
 import { authService } from "../auth/auth.service.js";
 import { poolService } from "../pools/pool.service.js";
+import { AppError } from "../../middleware/errorHandler.js";
 
 describe("Phase 4 — Ride Request Module Tests", () => {
   const nusratUser = {
@@ -129,6 +130,34 @@ describe("Phase 4 — Ride Request Module Tests", () => {
       expect(response.status).toBe(400);
       expect(response.body.success).toBe(false);
       expect(response.body.error.code).toBe("VALIDATION_ERROR");
+    });
+
+    it("should reject with 409 POOL_CAPACITY_EXCEEDED and rollback ride when pool matching fails due to full capacity", async () => {
+      vi.spyOn(prisma.user, "findUnique").mockResolvedValue(nusratUser);
+      vi.spyOn(prisma.rideRequest, "findFirst").mockResolvedValue(null);
+      vi.spyOn(prisma.rideRequest, "create").mockResolvedValue(mockNusratRide);
+      const deleteSpy = vi.spyOn(prisma.rideRequest, "delete").mockResolvedValue(mockNusratRide);
+      vi.spyOn(poolService, "matchOrCreatePool").mockRejectedValue(
+        new AppError(
+          "The remaining seats on this vehicle were just booked by another passenger",
+          409,
+          "POOL_CAPACITY_EXCEEDED"
+        )
+      );
+
+      const response = await request(app)
+        .post("/api/ride-requests")
+        .set("Authorization", `Bearer ${nusratToken}`)
+        .send({
+          pickupZone: "BANANI",
+          destinationZone: "MOHAKHALI",
+          seatCount: 1,
+        });
+
+      expect(response.status).toBe(409);
+      expect(response.body.success).toBe(false);
+      expect(response.body.error.code).toBe("POOL_CAPACITY_EXCEEDED");
+      expect(deleteSpy).toHaveBeenCalledWith({ where: { id: mockNusratRide.id } });
     });
   });
 

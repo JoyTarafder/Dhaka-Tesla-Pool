@@ -40,7 +40,7 @@ import { PaymentModal, PaymentMethodChoice } from "@/components/motion/PaymentMo
 
 
 export default function PassengerDashboardPage() {
-  const { user, token, logout } = useAuth();
+  const { user, token, isLoading: isAuthLoading, logout } = useAuth();
 
   const [zones, setZones] = useState<Zone[]>([]);
   const [pickupZone, setPickupZone] = useState("BANANI");
@@ -111,12 +111,14 @@ export default function PassengerDashboardPage() {
   };
 
   useEffect(() => {
+    if (isAuthLoading && !user) return;
+
     if (token && user?.role === "PASSENGER") {
       loadRides();
-    } else {
+    } else if (!isAuthLoading) {
       setIsLoadingRides(false);
     }
-  }, [token, user]);
+  }, [token, user, isAuthLoading]);
 
   // Real-time live status updates: Poll active ride status periodically so UI reflects driver actions seamlessly
   useEffect(() => {
@@ -134,7 +136,12 @@ export default function PassengerDashboardPage() {
   }, [token, user, activeRide?.id, activeRide?.status]);
 
   // Recalculate fare estimation whenever pickup, destination, or seat count changes
+  // Avoid unnecessary estimation on reload if activeRide is present or while loading
   useEffect(() => {
+    if (isAuthLoading || isLoadingRides || activeRide) {
+      return;
+    }
+
     if (pickupZone && destinationZone && pickupZone !== destinationZone) {
       setIsEstimating(true);
       apiEstimateFare(pickupZone, destinationZone, seatCount)
@@ -152,7 +159,7 @@ export default function PassengerDashboardPage() {
     } else {
       setFareEstimate(null);
     }
-  }, [pickupZone, destinationZone, seatCount]);
+  }, [pickupZone, destinationZone, seatCount, activeRide, isAuthLoading, isLoadingRides]);
 
   // Handle ride request trigger: open payment modal to choose Cash or Online
   const handlePromptPayment = (e?: React.SyntheticEvent) => {
@@ -169,10 +176,11 @@ export default function PassengerDashboardPage() {
     setIsSubmitting(true);
     setError(null);
     setConflictToastMessage(null);
+    // Close payment modal first so user sees the dashboard and alerts without backdrop obstruction
+    setIsPaymentModalOpen(false);
 
     try {
       await apiCreateRideRequest(token, pickupZone, destinationZone, seatCount, method);
-      setIsPaymentModalOpen(false);
       await loadRides();
     } catch (err) {
       const apiErr = err as ApiError;
@@ -216,6 +224,15 @@ export default function PassengerDashboardPage() {
       setIsCancelling(false);
     }
   };
+  // Guard: Auth loading state to prevent unauthorized flash during hydration
+  if (isAuthLoading && !user) {
+    return (
+      <div className="min-h-screen bg-background text-foreground flex flex-col justify-between p-4 sm:p-6 lg:p-10 max-w-5xl mx-auto">
+        <RideCardSkeleton />
+      </div>
+    );
+  }
+
   // Guard: Unauthorized state (Design.md §3)
   if (!isLoadingRides && (!user || user.role !== "PASSENGER")) {
     return (

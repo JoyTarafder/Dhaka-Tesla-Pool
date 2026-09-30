@@ -36,7 +36,7 @@ import { SeatCapacityVisualizer } from "@/components/motion/SeatCapacityVisualiz
 import { DriverConsoleSkeleton } from "@/components/motion/SkeletonShimmer";
 
 export default function DriverDashboardPage() {
-  const { user, token, logout } = useAuth();
+  const { user, token, isLoading: isAuthLoading, logout } = useAuth();
   const [vehicle, setVehicle] = useState<Vehicle | null>(null);
   const [activePool, setActivePool] = useState<Pool | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -47,7 +47,7 @@ export default function DriverDashboardPage() {
   // Load driver's assigned vehicle and active pool (silent = true disables spinner and error banner on background poll)
   const loadDriverData = async (silent = false) => {
     if (!token || user?.role !== "DRIVER") {
-      if (!silent) setIsLoading(false);
+      if (!silent && !isAuthLoading) setIsLoading(false);
       return;
     }
 
@@ -69,8 +69,9 @@ export default function DriverDashboardPage() {
   };
 
   useEffect(() => {
+    if (isAuthLoading && !user) return;
     loadDriverData();
-  }, [token, user]);
+  }, [token, user, isAuthLoading]);
 
   // Real-time live updates: Poll active pool data periodically so new passenger bookings appear automatically
   useEffect(() => {
@@ -127,6 +128,15 @@ export default function DriverDashboardPage() {
       setIsTransitioning(false);
     }
   };
+
+  // Guard: Auth loading state to prevent unauthorized flash during hydration
+  if (isAuthLoading && !user) {
+    return (
+      <div className="min-h-screen bg-background text-foreground flex flex-col justify-between p-4 sm:p-6 lg:p-8 max-w-5xl mx-auto">
+        <DriverConsoleSkeleton />
+      </div>
+    );
+  }
 
   // Guard: Unauthorized state (Design.md §3)
   if (!isLoading && (!user || user.role !== "DRIVER")) {

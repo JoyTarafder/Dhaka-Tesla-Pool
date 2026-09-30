@@ -5,7 +5,7 @@ import { Zap, Users, ShieldCheck, MapPin, LogOut, ArrowRight } from "lucide-reac
 import { useAuth } from "@/context/auth-context";
 
 export default function HomePage() {
-  const { user, logout } = useAuth();
+  const { user, isLoading: isAuthLoading, logout } = useAuth();
 
   return (
     <main className="min-h-screen flex flex-col justify-between p-4 sm:p-6 lg:p-8 max-w-5xl mx-auto relative">
@@ -21,7 +21,9 @@ export default function HomePage() {
         </div>
 
         <div className="flex items-center gap-3 sm:gap-4">
-          {user ? (
+          {isAuthLoading && !user ? (
+            <div className="w-24 h-7 rounded-xl bg-zinc-900/60 animate-pulse border border-white/[0.05]" />
+          ) : user ? (
             <div className="flex items-center gap-2.5 sm:gap-3">
               <div className="text-right">
                 <span className="text-xs sm:text-sm font-bold text-white block">{user.name}</span>
@@ -30,7 +32,7 @@ export default function HomePage() {
               <button
                 onClick={logout}
                 title="Sign Out"
-                className="p-1.5 sm:px-3 sm:py-1.5 rounded-xl bg-red-500/10 border border-red-500/25 text-red-400 hover:bg-red-500/20 hover:text-red-300 transition-all flex items-center gap-1.5 text-xs font-semibold"
+                className="p-1.5 sm:px-3 sm:py-1.5 rounded-xl bg-red-500/10 border border-red-500/25 text-red-400 hover:bg-red-500/20 hover:text-red-300 transition-all flex items-center gap-1.5 text-xs font-semibold cursor-pointer"
               >
                 <LogOut className="w-3.5 h-3.5" />
                 <span className="hidden sm:inline">Sign Out</span>

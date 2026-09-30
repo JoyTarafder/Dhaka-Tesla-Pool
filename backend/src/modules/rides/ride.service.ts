@@ -112,8 +112,13 @@ export class RideService {
       if (matchedRide) {
         return this.formatRide(matchedRide);
       }
-    } catch {
-      // If no vehicle is currently online or pool capacity full, ride safely remains in REQUESTED status
+    } catch (err) {
+      // Per PRD.md §3 & PRD_explain.md §14 and §15:
+      // When pool capacity is exceeded (or no vehicle is available), do not leave a phantom unserviced ride.
+      // Rollback the unfulfillable ride and propagate the domain error (409 POOL_CAPACITY_EXCEEDED / 503)
+      // so the client receives the exact conflict error response and displays the Conflict Toast.
+      await prisma.rideRequest.delete({ where: { id: newRide.id } }).catch(() => {});
+      throw err;
     }
 
     return this.formatRide(newRide);

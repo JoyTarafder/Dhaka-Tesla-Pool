@@ -13,11 +13,11 @@ export function ConflictToast({ message, onDismiss }: ConflictToastProps) {
     <AnimatePresence>
       {message && (
         <motion.div
-          initial={{ opacity: 0, x: 300 }}
-          animate={{ opacity: 1, x: 0 }}
-          exit={{ opacity: 0, x: 300 }}
-          transition={{ type: "spring", stiffness: 300, damping: 25 }}
-          className="fixed bottom-4 left-4 right-4 sm:bottom-6 sm:right-6 sm:left-auto sm:max-w-md z-50 p-4 rounded-2xl bg-zinc-950/90 border border-amber-500/30 shadow-[0_10px_40px_rgba(0,0,0,0.7)] flex items-start gap-3.5 text-zinc-100 backdrop-blur-xl"
+          initial={{ opacity: 0, y: -30, scale: 0.95 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          exit={{ opacity: 0, y: -30, scale: 0.95 }}
+          transition={{ type: "spring", stiffness: 400, damping: 30 }}
+          className="fixed top-5 left-4 right-4 sm:left-1/2 sm:-translate-x-1/2 sm:right-auto sm:w-full sm:max-w-md z-[60] p-4 rounded-2xl bg-zinc-950/95 border border-amber-500/40 shadow-[0_15px_50px_rgba(0,0,0,0.85)] flex items-start gap-3.5 text-zinc-100 backdrop-blur-xl ring-1 ring-amber-500/20"
         >
           <div className="w-9 h-9 rounded-xl bg-amber-500/15 text-amber-400 border border-amber-500/25 flex items-center justify-center shrink-0">
             <Users className="w-5 h-5" />

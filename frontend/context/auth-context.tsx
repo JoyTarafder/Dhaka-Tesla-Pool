@@ -19,17 +19,29 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [token, setToken] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  // Initialize auth state from localStorage on mount
+  // Initialize auth state from localStorage on mount (instant hydration to prevent reload flash)
   useEffect(() => {
     const savedToken = localStorage.getItem("dhaka_tesla_token");
+    const savedUser = localStorage.getItem("dhaka_tesla_user");
+
     if (savedToken) {
       setToken(savedToken);
+      if (savedUser) {
+        try {
+          setUser(JSON.parse(savedUser));
+        } catch {
+          // If parse fails, fallback to network fetch
+        }
+      }
+
       apiGetMe(savedToken)
         .then((res) => {
           setUser(res.user);
+          localStorage.setItem("dhaka_tesla_user", JSON.stringify(res.user));
         })
         .catch(() => {
           localStorage.removeItem("dhaka_tesla_token");
+          localStorage.removeItem("dhaka_tesla_user");
           setToken(null);
           setUser(null);
         })
@@ -45,6 +57,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setUser(res.user);
     setToken(res.token);
     localStorage.setItem("dhaka_tesla_token", res.token);
+    localStorage.setItem("dhaka_tesla_user", JSON.stringify(res.user));
   };
 
   const login = async (email: string, password: string) => {
@@ -61,6 +74,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setUser(null);
     setToken(null);
     localStorage.removeItem("dhaka_tesla_token");
+    localStorage.removeItem("dhaka_tesla_user");
   };
 
   return (
