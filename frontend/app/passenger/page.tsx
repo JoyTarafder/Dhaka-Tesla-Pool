@@ -94,18 +94,19 @@ export default function PassengerDashboardPage() {
       });
   }, []);
 
-  // Fetch passenger's active ride & history
-  const loadRides = async () => {
+  // Fetch passenger's active ride & history (silent = true disables full screen skeleton and error toast on background poll)
+  const loadRides = async (silent = false) => {
     if (!token) return;
     try {
+      if (!silent) setIsLoadingRides(true);
       const res = await apiGetMyRides(token);
       setActiveRide(res.activeRide);
       setHistory(res.history);
     } catch (err) {
       const apiErr = err as ApiError;
-      setError(apiErr.message || "Could not load ride status.");
+      if (!silent) setError(apiErr.message || "Could not load ride status.");
     } finally {
-      setIsLoadingRides(false);
+      if (!silent) setIsLoadingRides(false);
     }
   };
 
@@ -116,6 +117,21 @@ export default function PassengerDashboardPage() {
       setIsLoadingRides(false);
     }
   }, [token, user]);
+
+  // Real-time live status updates: Poll active ride status periodically so UI reflects driver actions seamlessly
+  useEffect(() => {
+    if (!token || user?.role !== "PASSENGER" || !activeRide) return;
+
+    // Stop polling if ride has reached terminal state
+    const terminalStatuses = ["COMPLETED", "CANCELLED"];
+    if (terminalStatuses.includes(activeRide.status)) return;
+
+    const intervalId = setInterval(() => {
+      loadRides(true);
+    }, 2500);
+
+    return () => clearInterval(intervalId);
+  }, [token, user, activeRide?.id, activeRide?.status]);
 
   // Recalculate fare estimation whenever pickup, destination, or seat count changes
   useEffect(() => {

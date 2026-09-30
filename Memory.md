@@ -51,8 +51,8 @@ Full rationale and alternatives: see **Architecture.md** §2.
 - **AGENTS.md** — same dev rules, in the cross-tool format Antigravity (v1.20.3+), Cursor, and Claude Code all read directly from the repo root — this is the one to use for Antigravity
 
 ## 6. Current status
-**Phase:** Phase 9 (Documentation & Release Readiness) complete — Comprehensive production README.md created. Master Senior Engineer audit and refactor completed: removed dead tailwind config glob, hardened Docker Compose JWT secret substitution & removed deprecated version tag, strictly typed Prisma payloads in pool & ride modules eliminating all `any` escapes, cleaned up whitespace/formatting, updated transaction mocks, and verified all 75/75 Vitest tests and Next.js production build pass cleanly with 0 TypeScript/build errors.
-**Last updated:** 2026-09-30 (Senior Code Audit & Type Hardening Complete)
+**Phase:** Phase 9 (Documentation & Release Readiness) complete — Comprehensive production README.md created. Real-time background polling implemented in Passenger and Driver dashboards for live status synchronization (no page reload required upon driver acceptance/transit/arrival). Master Senior Engineer audit and refactor completed: removed dead tailwind config glob, hardened Docker Compose JWT secret substitution & removed deprecated version tag, strictly typed Prisma payloads in pool & ride modules eliminating all `any` escapes, cleaned up whitespace/formatting, updated transaction mocks, and verified all 75/75 Vitest tests and Next.js production build pass cleanly with 0 TypeScript/build errors.
+**Last updated:** 2026-09-30 (Live Real-Time Status Polling Implemented)
 
 ## 7. Open decisions / not yet finalized
 - Final 6-minute video recording to be recorded by the user following the script in README.md. (All git branches `master`, `pre-release`, `release/v1.0.0`, and tag `v1.0.0` pushed).

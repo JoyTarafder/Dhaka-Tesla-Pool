@@ -44,14 +44,15 @@ export default function DriverDashboardPage() {
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // Load driver's assigned vehicle and active pool on mount
-  const loadDriverData = async () => {
+  // Load driver's assigned vehicle and active pool (silent = true disables spinner and error banner on background poll)
+  const loadDriverData = async (silent = false) => {
     if (!token || user?.role !== "DRIVER") {
-      setIsLoading(false);
+      if (!silent) setIsLoading(false);
       return;
     }
 
     try {
+      if (!silent) setIsLoading(true);
       const [vehicleRes, poolRes] = await Promise.all([
         apiGetDriverVehicle(token),
         apiGetDriverPools(token).catch(() => ({ pool: null })),
@@ -61,14 +62,25 @@ export default function DriverDashboardPage() {
       setActivePool(poolRes.pool);
     } catch (err) {
       const apiErr = err as ApiError;
-      setError(apiErr.message || "Could not load driver console data.");
+      if (!silent) setError(apiErr.message || "Could not load driver console data.");
     } finally {
-      setIsLoading(false);
+      if (!silent) setIsLoading(false);
     }
   };
 
   useEffect(() => {
     loadDriverData();
+  }, [token, user]);
+
+  // Real-time live updates: Poll active pool data periodically so new passenger bookings appear automatically
+  useEffect(() => {
+    if (!token || user?.role !== "DRIVER") return;
+
+    const intervalId = setInterval(() => {
+      loadDriverData(true);
+    }, 3000);
+
+    return () => clearInterval(intervalId);
   }, [token, user]);
 
   // Handle availability toggle
