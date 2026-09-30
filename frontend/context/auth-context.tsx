@@ -75,6 +75,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setToken(null);
     localStorage.removeItem("dhaka_tesla_token");
     localStorage.removeItem("dhaka_tesla_user");
+    localStorage.removeItem("dhaka_tesla_active_ride");
   };
 
   return (

@@ -16,25 +16,17 @@ import {
   ChevronRight,
 } from "lucide-react";
 import { useAuth } from "@/context/auth-context";
+import { BrandLogo } from "@/components/BrandLogo";
 
 export default function HomePage() {
   const { user, isLoading: isAuthLoading, logout } = useAuth();
 
   return (
-    <main className="min-h-screen flex flex-col justify-between p-4 sm:p-6 lg:p-8 max-w-7xl mx-auto relative overflow-hidden">
+    <main className="min-h-screen flex flex-col justify-between p-4 sm:p-6 lg:p-8 max-w-7xl mx-auto relative">
       {/* 1. VoltPeak Light Glass Navigation Bar (Design.md §2.1) */}
-      <header className="sticky top-3 sm:top-4 z-40 flex justify-between items-center px-5 sm:px-8 py-3.5 rounded-full glass border border-white/80 shadow-card">
+      <header className="sticky top-3 sm:top-4 z-50 flex justify-between items-center px-5 sm:px-8 py-3.5 rounded-full glass border border-white/80 shadow-card backdrop-blur-xl">
         {/* Brand Logo */}
-        <Link href="/" className="flex items-center gap-2.5 group">
-          <div className="w-8 h-8 rounded-full bg-accent text-white flex items-center justify-center font-bold shadow-md shadow-accent/25 group-hover:scale-105 transition-transform">
-            <Zap className="w-4 h-4 fill-white" />
-          </div>
-          <div className="flex flex-col">
-            <span className="text-sm sm:text-base font-bold tracking-tight text-ink uppercase">
-              Dhaka Tesla Pool
-            </span>
-          </div>
-        </Link>
+        <BrandLogo />
 
         {/* Centered Navigation Links (Design.md §2.1) */}
         <nav className="hidden md:flex items-center gap-7 text-[12px] font-semibold uppercase tracking-[0.08em] text-ink-muted">
@@ -73,7 +65,7 @@ export default function HomePage() {
               <button
                 onClick={logout}
                 title="Sign Out"
-                className="p-2 rounded-full bg-white/70 border border-[#d4d8ee] text-ink-muted hover:text-danger hover:border-danger/30 transition-all cursor-pointer"
+                className="p-2 rounded-full bg-white/70 border border-[#d4d8ee] text-ink-muted hover:text-danger hover:border-danger/30 hover:bg-danger/10 transition-all cursor-pointer shadow-sm"
               >
                 <LogOut className="w-3.5 h-3.5" />
               </button>
@@ -252,14 +244,23 @@ export default function HomePage() {
       <section className="my-6 p-5 sm:p-6 rounded-2xl glass border border-white/80 shadow-card flex flex-col sm:flex-row items-center justify-between gap-6">
         <div className="flex items-center gap-4">
           {/* Overlapping Avatar Stack (Nusrat, Rafiq, Shirin) */}
-          <div className="flex -space-x-3 overflow-hidden">
-            <div className="inline-block h-10 w-10 rounded-full ring-2 ring-white bg-accent text-white flex items-center justify-center font-bold text-xs shadow-sm">
+          <div className="flex -space-x-2.5 items-center">
+            <div
+              className="h-10 w-10 rounded-full ring-2 ring-white bg-[#10b981] text-white flex items-center justify-center font-bold text-xs shadow-sm"
+              title="Nusrat"
+            >
               N
             </div>
-            <div className="inline-block h-10 w-10 rounded-full ring-2 ring-white bg-[#0b0b0c] text-white flex items-center justify-center font-bold text-xs shadow-sm">
+            <div
+              className="h-10 w-10 rounded-full ring-2 ring-white bg-[#0b0b0c] text-white flex items-center justify-center font-bold text-xs shadow-sm"
+              title="Rafiq"
+            >
               R
             </div>
-            <div className="inline-block h-10 w-10 rounded-full ring-2 ring-white bg-success text-white flex items-center justify-center font-bold text-xs shadow-sm">
+            <div
+              className="h-10 w-10 rounded-full ring-2 ring-white bg-[#3b82f6] text-white flex items-center justify-center font-bold text-xs shadow-sm"
+              title="Shirin"
+            >
               S
             </div>
           </div>

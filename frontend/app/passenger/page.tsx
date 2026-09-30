@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import Link from "next/link";
 import {
   Zap,
@@ -17,6 +17,7 @@ import {
   LogOut,
 } from "lucide-react";
 import { useAuth } from "@/context/auth-context";
+import { BrandLogo } from "@/components/BrandLogo";
 import { motion } from "framer-motion";
 import {
   apiGetZones,
@@ -35,7 +36,7 @@ import { StatusStepper } from "@/components/motion/StatusStepper";
 import { FareBreakdown } from "@/components/motion/FareBreakdown";
 import { ConfirmModal } from "@/components/motion/ConfirmModal";
 import { ConflictToast } from "@/components/motion/ConflictToast";
-import { RideCardSkeleton, FareBreakdownSkeleton } from "@/components/motion/SkeletonShimmer";
+import { FareBreakdownSkeleton } from "@/components/motion/SkeletonShimmer";
 import { PaymentModal, PaymentMethodChoice } from "@/components/motion/PaymentModal";
 
 
@@ -50,7 +51,18 @@ export default function PassengerDashboardPage() {
   const [fareEstimate, setFareEstimate] = useState<FareEstimate | null>(null);
   const [isEstimating, setIsEstimating] = useState(false);
 
-  const [activeRide, setActiveRide] = useState<RideRequest | null>(null);
+  // Hydrate active ride from localStorage on mount to prevent layout shifts
+  const [activeRide, setActiveRide] = useState<RideRequest | null>(() => {
+    if (typeof window !== "undefined") {
+      try {
+        const cached = localStorage.getItem("dhaka_tesla_active_ride");
+        return cached ? JSON.parse(cached) : null;
+      } catch {
+        return null;
+      }
+    }
+    return null;
+  });
   const [history, setHistory] = useState<RideRequest[]>([]);
   const [isLoadingRides, setIsLoadingRides] = useState(true);
 
@@ -69,6 +81,11 @@ export default function PassengerDashboardPage() {
 
   // Payment Selection Modal state
   const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
+
+  // Stable handler for dismissing conflict toast
+  const handleDismissConflictToast = useCallback(() => {
+    setConflictToastMessage(null);
+  }, []);
 
   const openRideHistory = async (rideId: string) => {
     if (!token) return;
@@ -101,6 +118,11 @@ export default function PassengerDashboardPage() {
       if (!silent) setIsLoadingRides(true);
       const res = await apiGetMyRides(token);
       setActiveRide(res.activeRide);
+      if (res.activeRide) {
+        localStorage.setItem("dhaka_tesla_active_ride", JSON.stringify(res.activeRide));
+      } else {
+        localStorage.removeItem("dhaka_tesla_active_ride");
+      }
       setHistory(res.history);
     } catch (err) {
       const apiErr = err as ApiError;
@@ -136,9 +158,9 @@ export default function PassengerDashboardPage() {
   }, [token, user, activeRide?.id, activeRide?.status]);
 
   // Recalculate fare estimation whenever pickup, destination, or seat count changes
-  // Avoid unnecessary estimation on reload if activeRide is present or while loading
+  // Avoid unnecessary estimation on reload if activeRide is present
   useEffect(() => {
-    if (isAuthLoading || isLoadingRides || activeRide) {
+    if (isAuthLoading || activeRide) {
       return;
     }
 
@@ -159,7 +181,7 @@ export default function PassengerDashboardPage() {
     } else {
       setFareEstimate(null);
     }
-  }, [pickupZone, destinationZone, seatCount, activeRide, isAuthLoading, isLoadingRides]);
+  }, [pickupZone, destinationZone, seatCount, activeRide, isAuthLoading]);
 
   // Handle ride request trigger: open payment modal to choose Cash or Online
   const handlePromptPayment = (e?: React.SyntheticEvent) => {
@@ -172,7 +194,7 @@ export default function PassengerDashboardPage() {
 
   // Execute ride booking once payment method (Cash or Online) is selected
   const handleConfirmPaymentAndBook = async (method: PaymentMethodChoice) => {
-    if (!token) return;
+    if (!token || isSubmitting) return;
     setIsSubmitting(true);
     setError(null);
     setConflictToastMessage(null);
@@ -227,8 +249,8 @@ export default function PassengerDashboardPage() {
   // Guard: Auth loading state to prevent unauthorized flash during hydration
   if (isAuthLoading && !user) {
     return (
-      <div className="min-h-screen text-ink flex flex-col justify-between p-4 sm:p-6 lg:p-10 max-w-5xl mx-auto">
-        <RideCardSkeleton />
+      <div className="min-h-screen bg-canvas flex items-center justify-center">
+        <Loader2 className="w-8 h-8 animate-spin text-accent" />
       </div>
     );
   }
@@ -264,23 +286,10 @@ export default function PassengerDashboardPage() {
   }
 
   return (
-    <div className="min-h-screen text-ink flex flex-col justify-between p-4 sm:p-6 lg:p-10 max-w-5xl mx-auto">
+    <div className="min-h-screen text-ink flex flex-col justify-between p-4 sm:p-6 lg:p-8 max-w-7xl mx-auto">
       {/* Header */}
-      <header className="sticky top-3 sm:top-4 z-40 mb-6 glass border border-white/80 rounded-2xl shadow-card p-4 sm:p-5 flex flex-wrap items-center justify-between gap-4">
-        <div className="flex items-center gap-3">
-          <Link href="/" className="flex items-center gap-2.5 group">
-            <div className="w-9 h-9 rounded-full bg-accent text-white flex items-center justify-center font-bold shadow-md shadow-accent/25 group-hover:scale-105 transition-transform">
-              <Zap className="w-4 h-4 fill-white" />
-            </div>
-            <div>
-              <span className="text-base sm:text-lg font-bold tracking-tight text-ink block leading-tight">Dhaka Tesla Pool</span>
-              <span className="text-[10px] text-ink-muted font-mono tracking-wider uppercase">Electric Fleet Network</span>
-            </div>
-          </Link>
-          <span className="hidden sm:inline-flex text-xs px-3 py-1 rounded-full bg-accent-soft text-accent border border-accent/25 font-semibold">
-            Passenger Console
-          </span>
-        </div>
+      <header className="sticky top-3 sm:top-4 z-40 mb-6 glass border border-white/80 rounded-full shadow-card px-5 sm:px-8 py-3.5 flex items-center justify-between gap-4">
+        <BrandLogo badge="Passenger Console" />
 
         <div className="flex items-center gap-3 sm:gap-4">
           <div className="text-right">
@@ -308,10 +317,8 @@ export default function PassengerDashboardPage() {
           </div>
         )}
 
-        {/* ACTIVE RIDE SECTION */}
-        {isLoadingRides ? (
-          <RideCardSkeleton />
-        ) : activeRide ? (
+        {/* ACTIVE RIDE SECTION (Rendered only when user has an active ride) */}
+        {activeRide && (
           <div className="p-5 sm:p-7 rounded-2xl glass-elevated border border-white space-y-6 shadow-card relative overflow-hidden">
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-[#d4d8ee]/70 pb-5 relative z-10">
               <div>
@@ -367,7 +374,7 @@ export default function PassengerDashboardPage() {
               <StatusStepper currentStatus={activeRide.status} />
             </div>
           </div>
-        ) : null}
+        )}
 
         {/* NEW RIDE REQUEST FORM (Shown if no active ride exists) */}
         {!activeRide && (
@@ -652,7 +659,7 @@ export default function PassengerDashboardPage() {
       {/* Capacity Conflict Toast (Phase 7 - Design.md §4.4) */}
       <ConflictToast
         message={conflictToastMessage}
-        onDismiss={() => setConflictToastMessage(null)}
+        onDismiss={handleDismissConflictToast}
       />
 
       {/* Payment Selection Modal (Cash vs Online) */}

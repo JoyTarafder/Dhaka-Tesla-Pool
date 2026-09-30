@@ -25,6 +25,7 @@ import {
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useAuth } from "@/context/auth-context";
+import { BrandLogo } from "@/components/BrandLogo";
 import {
   apiGetDriverPaymentHistory,
   DriverPaymentHistoryResponse,
@@ -73,7 +74,7 @@ export default function DriverPaymentHistoryPage() {
   // Guard: Auth loading state to prevent unauthorized flash during hydration
   if (isAuthLoading && !user) {
     return (
-      <div className="min-h-screen text-ink flex flex-col justify-between p-4 sm:p-6 lg:p-8 max-w-5xl mx-auto">
+      <div className="min-h-screen text-ink flex flex-col justify-between p-4 sm:p-6 lg:p-8 max-w-7xl mx-auto">
         <PaymentHistorySkeleton />
       </div>
     );
@@ -125,22 +126,10 @@ export default function DriverPaymentHistoryPage() {
       : "৳0.00";
 
   return (
-    <div className="min-h-screen text-ink flex flex-col justify-between p-4 sm:p-6 lg:p-8 max-w-5xl mx-auto relative">
+    <div className="min-h-screen text-ink flex flex-col justify-between p-4 sm:p-6 lg:p-8 max-w-7xl mx-auto relative">
       {/* Top Navbar */}
-      <header className="sticky top-3 sm:top-4 z-40 flex justify-between items-center px-4 sm:px-6 py-3.5 rounded-full glass-card border border-white/80 shadow-[0_8px_30px_rgba(20,25,45,0.06)]">
-        <div className="flex items-center gap-2.5">
-          <Link href="/driver" className="flex items-center gap-2.5 group">
-            <div className="w-8 h-8 rounded-full bg-black text-white flex items-center justify-center font-bold shadow-sm group-hover:scale-105 transition-all">
-              <Zap className="w-4 h-4 text-white fill-white" />
-            </div>
-            <span className="text-base sm:text-lg font-bold tracking-tight text-ink">
-              Dhaka Tesla Pool
-            </span>
-          </Link>
-          <span className="hidden sm:inline-flex text-[11px] font-semibold uppercase px-2.5 py-0.5 rounded-full bg-accent/10 text-accent border border-accent/20 ml-1">
-            Payment Telemetry
-          </span>
-        </div>
+      <header className="sticky top-3 sm:top-4 z-40 flex justify-between items-center px-5 sm:px-8 py-3.5 rounded-full glass border border-white/80 shadow-card">
+        <BrandLogo href="/driver" badge="Payment Telemetry" />
 
         <div className="flex items-center gap-2.5 sm:gap-3">
           <Link
@@ -155,13 +144,13 @@ export default function DriverPaymentHistoryPage() {
             <span className="text-xs sm:text-sm font-bold text-ink block">
               {user?.name}
             </span>
-            <span className="text-[10px] text-accent font-mono uppercase tracking-wider font-semibold">Bullet Pilot</span>
+            <span className="text-[10px] text-accent font-mono uppercase tracking-wider font-semibold">Driver</span>
           </div>
 
           <button
             onClick={logout}
             title="Sign Out"
-            className="p-1.5 sm:px-3 sm:py-1.5 rounded-full bg-danger/10 border border-danger/20 text-danger hover:bg-danger/15 transition-all flex items-center gap-1.5 text-xs font-semibold"
+            className="p-2 sm:px-4 sm:py-2 rounded-full bg-white/70 border border-[#d4d8ee] text-ink-muted hover:text-danger hover:border-danger/30 hover:bg-danger/10 transition-all flex items-center gap-1.5 text-xs font-semibold cursor-pointer shadow-sm"
           >
             <LogOut className="w-3.5 h-3.5" />
             <span className="hidden sm:inline">Sign Out</span>
@@ -348,9 +337,10 @@ export default function DriverPaymentHistoryPage() {
                         </div>
 
                         {/* Passenger Breakdown Dropdown */}
-                        <AnimatePresence>
+                        <AnimatePresence mode="wait">
                           {isExpanded && (
                             <motion.div
+                              key={`trip-breakdown-${trip.poolId}`}
                               initial={{ opacity: 0, height: 0 }}
                               animate={{ opacity: 1, height: "auto" }}
                               exit={{ opacity: 0, height: 0 }}

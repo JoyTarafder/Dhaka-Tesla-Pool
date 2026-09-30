@@ -46,22 +46,22 @@ export function FareBreakdown({ fare }: FareBreakdownProps) {
 
       {/* Fare Components Breakdown */}
       <div className="space-y-2.5 text-xs divide-y divide-[#d4d8ee]/60 p-3.5 rounded-xl bg-white/70 border border-[#d4d8ee] shadow-sm">
-        <motion.div variants={itemVariants} className="flex justify-between items-center text-ink-muted pt-0.5">
-          <span>Base Flag Fare</span>
-          <span className="font-mono text-ink font-semibold">{fare.formattedBdt.baseFare}</span>
+        <motion.div variants={itemVariants} className="flex justify-between items-center gap-3 text-ink-muted pt-0.5">
+          <span className="shrink-0">Base Flag Fare</span>
+          <span className="font-mono text-ink font-semibold shrink-0">{fare.formattedBdt.baseFare}</span>
         </motion.div>
 
-        <motion.div variants={itemVariants} className="flex justify-between items-center text-ink-muted pt-2.5">
-          <span>Distance Rate Charge</span>
-          <span className="font-mono text-ink font-semibold">{fare.formattedBdt.distanceCharge}</span>
+        <motion.div variants={itemVariants} className="flex justify-between items-center gap-3 text-ink-muted pt-2.5">
+          <span className="shrink-0">Distance Rate Charge</span>
+          <span className="font-mono text-ink font-semibold shrink-0">{fare.formattedBdt.distanceCharge}</span>
         </motion.div>
 
-        <motion.div variants={itemVariants} className="flex justify-between items-center text-success pt-2.5">
-          <span className="flex items-center gap-1.5 font-medium">
-            <Tag className="w-3.5 h-3.5" />
-            <span>Corridor Pooling Discount (20%)</span>
+        <motion.div variants={itemVariants} className="flex justify-between items-center gap-3 text-success pt-2.5">
+          <span className="flex items-center gap-1.5 font-medium min-w-0">
+            <Tag className="w-3.5 h-3.5 shrink-0" />
+            <span className="truncate sm:whitespace-normal">Corridor Pooling Discount (20%)</span>
           </span>
-          <span className="font-mono font-bold px-2 py-0.5 rounded-full bg-success-soft border border-success/30 text-success">
+          <span className="inline-flex items-center font-mono font-bold text-xs px-2.5 py-0.5 rounded-full bg-success-soft border border-success/30 text-success whitespace-nowrap shrink-0">
             -{fare.formattedBdt.discount}
           </span>
         </motion.div>

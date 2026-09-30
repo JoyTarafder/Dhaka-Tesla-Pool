@@ -56,7 +56,7 @@ export default function LoginPage() {
         </div>
 
         <div className="text-center space-y-1.5">
-          <div className="inline-flex p-2.5 rounded-full bg-black text-white shadow-sm mb-1">
+          <div className="inline-flex p-2.5 rounded-full bg-accent text-white shadow-md shadow-accent/25 mb-1">
             <Zap className="w-5 h-5 fill-white" />
           </div>
           <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-ink">Sign In</h2>
