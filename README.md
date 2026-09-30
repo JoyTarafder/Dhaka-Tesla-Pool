@@ -1,10 +1,12 @@
 # Dhaka Tesla Pool — Smart Shared Commuter MVP
 
-[![Tests](https://img.shields.io/badge/tests-75%20passed-emerald)](file:///g:/New%20Projects/Dhaka%20Tesla%20Pool/backend/src/phase8.test.ts)
+[![Tests](https://img.shields.io/badge/tests-76%20passed-emerald)](file:///g:/New%20Projects/Dhaka%20Tesla%20Pool/backend/src/phase8.test.ts)
 [![Frontend](https://img.shields.io/badge/frontend-Next.js%2014-black)](file:///g:/New%20Projects/Dhaka%20Tesla%20Pool/frontend)
 [![Backend](https://img.shields.io/badge/backend-Node.js%20%2B%20Express-blue)](file:///g:/New%20Projects/Dhaka%20Tesla%20Pool/backend)
 [![Database](https://img.shields.io/badge/database-PostgreSQL%2016-blueviolet)](file:///g:/New%20Projects/Dhaka%20Tesla%20Pool/docker-compose.yml)
 [![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
+
+![Dhaka Tesla Pool Home Page](docs/screenshots/home-page.png)
 
 > **Dhaka Tesla Pool** is a production-grade ride-pooling MVP tailored for Dhaka commuters. In this assessment scenario, "Tesla" is the local affectionate nickname for **Bullet** — a modern 3-passenger battery-powered electric vehicle operated by driver **Jashim**. Passengers with nearby pickups and overlapping corridor destinations share Bullet, while the system strictly guarantees that vehicle capacity is never exceeded, fares are split fairly in integer poisha, and state transitions remain deterministic.
 
