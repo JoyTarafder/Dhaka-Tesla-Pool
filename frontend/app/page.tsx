@@ -123,7 +123,7 @@ export default function HomePage() {
                 href={user.role === "DRIVER" ? "/driver" : "/passenger"}
                 className="px-7 py-3.5 rounded-full bg-black text-white hover:bg-zinc-800 text-xs font-semibold uppercase tracking-[0.08em] transition-all shadow-pill flex items-center gap-2 group"
               >
-                <span>Request a Ride</span>
+                <span>{user.role === "DRIVER" ? "Driver Console" : "Request a Ride"}</span>
                 <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
               </Link>
             ) : (
