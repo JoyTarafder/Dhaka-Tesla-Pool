@@ -37,3 +37,6 @@ Thumbs.db
 # Testing coverage
 coverage/
 
+# Local explainer / notes (untracked)
+PRD_explain.md
+*.bak

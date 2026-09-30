@@ -14,13 +14,16 @@ interface ConflictToastProps {
  * Displays capacity concurrency alerts (e.g. Shirin losing last seat race) with a stable key
  * and smooth easeOut animation to eliminate double-render blinking/flicker.
  */
+// Auto-dismiss timeout for transient concurrency alerts (6 seconds)
+const CONFLICT_TOAST_AUTO_DISMISS_MS = 6000;
+
 export function ConflictToast({ message, onDismiss }: ConflictToastProps) {
-  // Auto-dismiss after 6 seconds so user is not blocked if they don't click the X button
+  // Auto-dismiss after timeout so user is not blocked if they don't click the X button
   useEffect(() => {
     if (!message) return;
     const timer = setTimeout(() => {
       onDismiss();
-    }, 6000);
+    }, CONFLICT_TOAST_AUTO_DISMISS_MS);
     return () => clearTimeout(timer);
   }, [message, onDismiss]);
 

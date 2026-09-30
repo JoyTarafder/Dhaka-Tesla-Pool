@@ -291,7 +291,7 @@ describe("Phase 8 — Core Engine & Security Verification Suite", () => {
         routeCode: "CORRIDOR_BANANI_SOUTH",
       };
 
-      vi.spyOn(prisma, "$transaction").mockImplementation(async (callback: any) => {
+      vi.spyOn(prisma, "$transaction").mockImplementation(async (callback) => {
         const txMock = {
           pool: {
             findFirst: vi.fn().mockResolvedValue(currentPool),
@@ -355,7 +355,7 @@ describe("Phase 8 — Core Engine & Security Verification Suite", () => {
         routeCode: "CORRIDOR_BANANI_SOUTH",
       };
 
-      vi.spyOn(prisma, "$transaction").mockImplementation(async (callback: any) => {
+      vi.spyOn(prisma, "$transaction").mockImplementation(async (callback) => {
         const txMock = {
           pool: {
             findFirst: vi.fn().mockResolvedValue(nearlyFullPool),
@@ -482,7 +482,7 @@ describe("Phase 8 — Core Engine & Security Verification Suite", () => {
       vi.spyOn(prisma.rideRequest, "findUnique").mockResolvedValue(nusratRide as any);
 
       let historyCreated = false;
-      vi.spyOn(prisma, "$transaction").mockImplementation(async (callback: any) => {
+      vi.spyOn(prisma, "$transaction").mockImplementation(async (callback) => {
         const txMock = {
           rideRequest: {
             update: vi.fn().mockResolvedValue({
@@ -537,7 +537,7 @@ describe("Phase 8 — Core Engine & Security Verification Suite", () => {
       vi.spyOn(prisma.rideRequest, "findUnique").mockResolvedValue(activeMatchedRide as any);
 
       let decrementedSeats = 0;
-      vi.spyOn(prisma, "$transaction").mockImplementation(async (callback: any) => {
+      vi.spyOn(prisma, "$transaction").mockImplementation(async (callback) => {
         const txMock = {
           rideRequest: {
             update: vi.fn().mockResolvedValue({ ...activeMatchedRide, status: RideStatus.CANCELLED }),
@@ -547,7 +547,7 @@ describe("Phase 8 — Core Engine & Security Verification Suite", () => {
             count: vi.fn().mockResolvedValue(1), // other member still active
           },
           pool: {
-            update: vi.fn().mockImplementation((args: any) => {
+            update: vi.fn().mockImplementation((args: { data: { occupiedSeats: { decrement: number } } }) => {
               decrementedSeats = args.data.occupiedSeats.decrement;
               return Promise.resolve({});
             }),
@@ -610,7 +610,7 @@ describe("Phase 8 — Core Engine & Security Verification Suite", () => {
 
       // Mock database atomic conditional execution:
       // The first call succeeds (count: 1); the second simultaneous call fails (count: 0)
-      vi.spyOn(prisma, "$transaction").mockImplementation(async (callback: any) => {
+      vi.spyOn(prisma, "$transaction").mockImplementation(async (callback) => {
         const txMock = {
           pool: {
             findFirst: vi.fn().mockResolvedValue(poolWithOneSeatLeft),

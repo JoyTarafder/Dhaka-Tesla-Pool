@@ -16,26 +16,6 @@ export function SkeletonShimmer({ className = "h-4 w-full" }: SkeletonProps) {
   );
 }
 
-/**
- * Passenger Console: Active ride tracking card skeleton
- */
-export function RideCardSkeleton() {
-  return (
-    <div className="p-5 sm:p-7 rounded-3xl glass border border-white/80 space-y-6 animate-pulse shadow-xl">
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 pb-5 border-b border-[#d4d8ee]/60">
-        <div className="space-y-2 w-full sm:w-auto">
-          <SkeletonShimmer className="h-4 w-28 rounded-full" />
-          <SkeletonShimmer className="h-6 w-48 rounded-lg" />
-        </div>
-        <div className="flex items-center gap-3 w-full sm:w-auto justify-between sm:justify-end">
-          <SkeletonShimmer className="h-6 w-20 rounded-md" />
-          <SkeletonShimmer className="h-9 w-24 rounded-full" />
-        </div>
-      </div>
-      <SkeletonShimmer className="h-14 w-full rounded-2xl" />
-    </div>
-  );
-}
 
 /**
  * Driver Console: Telemetry and active pool manifest skeleton

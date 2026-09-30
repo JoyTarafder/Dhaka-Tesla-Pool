@@ -135,7 +135,6 @@ export class RideService {
       orderBy: { createdAt: "desc" },
     });
 
-
     const formatted = rides.map((r) => this.formatRide(r));
     const active = formatted.find(
       (r) =>

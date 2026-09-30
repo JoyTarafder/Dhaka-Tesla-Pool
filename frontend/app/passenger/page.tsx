@@ -3,15 +3,12 @@
 import { useEffect, useState, useCallback } from "react";
 import Link from "next/link";
 import {
-  Zap,
   MapPin,
   Users,
   Shield,
   Loader2,
   AlertCircle,
   Clock,
-  CheckCircle2,
-  XCircle,
   Tag,
   ArrowRight,
   LogOut,
@@ -38,7 +35,6 @@ import { ConfirmModal } from "@/components/motion/ConfirmModal";
 import { ConflictToast } from "@/components/motion/ConflictToast";
 import { FareBreakdownSkeleton } from "@/components/motion/SkeletonShimmer";
 import { PaymentModal, PaymentMethodChoice } from "@/components/motion/PaymentModal";
-
 
 export default function PassengerDashboardPage() {
   const { user, token, isLoading: isAuthLoading, logout } = useAuth();

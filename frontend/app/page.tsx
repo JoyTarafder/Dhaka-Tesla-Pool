@@ -4,16 +4,12 @@ import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import {
-  Zap,
   Users,
   ShieldCheck,
-  MapPin,
   LogOut,
   ArrowRight,
-  Sparkles,
   Tag,
   CheckCircle2,
-  ChevronRight,
 } from "lucide-react";
 import { useAuth } from "@/context/auth-context";
 import { BrandLogo } from "@/components/BrandLogo";

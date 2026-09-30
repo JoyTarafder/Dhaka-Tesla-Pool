@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import {
-  Zap,
   Car,
   Shield,
   Power,
@@ -35,6 +34,19 @@ import {
 } from "@/lib/api";
 import { SeatCapacityVisualizer } from "@/components/motion/SeatCapacityVisualizer";
 import { DriverConsoleSkeleton } from "@/components/motion/SkeletonShimmer";
+
+// Mapping of driver actions to API callers (Phase 6)
+type LifecycleAction = "accept" | "arrive" | "start" | "complete";
+
+const LIFECYCLE_API_DISPATCH: Record<
+  LifecycleAction,
+  (token: string, poolId: string) => Promise<{ pool: Pool }>
+> = {
+  accept: apiAcceptPool,
+  arrive: apiArrivePool,
+  start: apiStartPool,
+  complete: apiCompletePool,
+};
 
 export default function DriverDashboardPage() {
   const { user, token, isLoading: isAuthLoading, logout } = useAuth();
@@ -104,23 +116,14 @@ export default function DriverDashboardPage() {
   };
 
   // Handle driver lifecycle transition actions (Phase 6)
-  const handleLifecycleTransition = async (action: "accept" | "arrive" | "start" | "complete") => {
+  const handleLifecycleTransition = async (action: LifecycleAction) => {
     if (!token || !activePool) return;
     setIsTransitioning(true);
     setError(null);
 
     try {
-      let res: { pool: Pool };
-      if (action === "accept") {
-        res = await apiAcceptPool(token, activePool.id);
-      } else if (action === "arrive") {
-        res = await apiArrivePool(token, activePool.id);
-      } else if (action === "start") {
-        res = await apiStartPool(token, activePool.id);
-      } else {
-        res = await apiCompletePool(token, activePool.id);
-      }
-
+      const dispatchFn = LIFECYCLE_API_DISPATCH[action];
+      const res = await dispatchFn(token, activePool.id);
       setActivePool(res.pool);
     } catch (err) {
       const apiErr = err as ApiError;

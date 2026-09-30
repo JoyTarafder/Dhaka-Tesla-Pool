@@ -51,10 +51,11 @@ Full rationale and alternatives: see **Architecture.md** §2.
 - **AGENTS.md** — same dev rules, in the cross-tool format Antigravity (v1.20.3+), Cursor, and Claude Code all read directly from the repo root — this is the one to use for Antigravity
 
 ## 6. Current status
-**Phase:** VoltPeak Design Transformation complete — Refreshed all frontend screens to the VoltPeak design system (light lavender-blue gradient #eef0fb → #b9c0f2, frosted glass panels rgba(255, 255, 255, 0.52), deep ink typography #0b0b0c, electric blue accents #3b82f6, emerald success #10b981, rose danger #e11d48, black pill buttons, floating glass callouts, and clean studio hero visual of Bullet EV). All backend models, controllers, business logic, endpoints, arithmetic (integer poisha), and 76/76 Vitest tests remain 100% intact and passing with zero regressions.
-**Last updated:** 2026-09-30 (VoltPeak Light Glass Design System Overhaul)
+**Phase:** Senior Codebase Audit & Production Refactor complete — Cleaned up dead code across frontend and backend: removed unused icon imports (`Zap`, `MapPin`, `Sparkles`, `ChevronRight`, `CheckCircle2`, `XCircle`, `Loader2`, `Calendar`), deleted unused `RideCardSkeleton` and `UpdateAvailabilityInput` declarations, unified average fare calculation with shared `formatPoishaToBdt` helper, streamlined driver lifecycle API dispatches with action maps, fixed import ordering in `layout.tsx`, extracted magic numbers to constants, and eliminated untyped transaction mock callbacks across test suites (`pool.test.ts`, `phase8.test.ts`, `ride.test.ts`). Completely purged `PRD_explain.md` from git tracking and full git commit history across all branches/tags, ignored in `.gitignore`. All 76/76 Vitest tests and frontend TypeScript builds pass with zero errors.
+**Last updated:** 2026-10-01 (Senior Codebase Audit & Git History Purge of PRD_explain.md)
 
 ## 7. Open decisions / not yet finalized
+- Setup of `.eslintrc.json` for frontend `next lint` if desired (not installed in current devDependencies).
 - Final 6-minute video recording to be recorded by the user following the script in README.md. (All git branches `master`, `pre-release`, `release/v1.0.0`, and tag `v1.0.0` pushed).
 
 ## 8. Update instructions for future sessions

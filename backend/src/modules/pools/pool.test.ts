@@ -101,7 +101,7 @@ describe("Phase 5 — Pooling & Concurrency Protection Tests", () => {
       vi.spyOn(prisma.rideRequest, "findUnique").mockResolvedValue(nusratRide as any);
 
       // Mock transaction execution
-      vi.spyOn(prisma, "$transaction").mockImplementation(async (callback: any) => {
+      vi.spyOn(prisma, "$transaction").mockImplementation(async (callback) => {
         const txMock = {
           pool: {
             findFirst: vi.fn().mockResolvedValue(null), // no existing pool
@@ -185,7 +185,7 @@ describe("Phase 5 — Pooling & Concurrency Protection Tests", () => {
         routeCode: "CORRIDOR_BANANI_SOUTH",
       };
 
-      vi.spyOn(prisma, "$transaction").mockImplementation(async (callback: any) => {
+      vi.spyOn(prisma, "$transaction").mockImplementation(async (callback) => {
         const txMock = {
           pool: {
             findFirst: vi.fn().mockResolvedValue(existingNusratPool),
@@ -273,7 +273,7 @@ describe("Phase 5 — Pooling & Concurrency Protection Tests", () => {
         routeCode: "CORRIDOR_BANANI_SOUTH",
       };
 
-      vi.spyOn(prisma, "$transaction").mockImplementation(async (callback: any) => {
+      vi.spyOn(prisma, "$transaction").mockImplementation(async (callback) => {
         const txMock = {
           pool: {
             findFirst: vi.fn().mockResolvedValue(fullPool),
@@ -384,7 +384,7 @@ describe("Phase 5 — Pooling & Concurrency Protection Tests", () => {
       vi.spyOn(prisma.user, "findUnique").mockResolvedValue(jashimDriver);
       vi.spyOn(prisma.pool, "findUnique").mockResolvedValue(activeMatchingPool as any);
 
-      vi.spyOn(prisma, "$transaction").mockImplementation(async (callback: any) => {
+      vi.spyOn(prisma, "$transaction").mockImplementation(async (callback) => {
         const txMock = {
           pool: { update: vi.fn().mockResolvedValue({ ...activeMatchingPool, status: PoolStatus.ACCEPTED }) },
           rideRequest: { update: vi.fn().mockResolvedValue({ ...nusratRide, status: RideStatus.ACCEPTED }) },
@@ -440,7 +440,7 @@ describe("Phase 5 — Pooling & Concurrency Protection Tests", () => {
       vi.spyOn(prisma.user, "findUnique").mockResolvedValue(jashimDriver);
       vi.spyOn(prisma.pool, "findUnique").mockResolvedValue(acceptedPool as any);
 
-      vi.spyOn(prisma, "$transaction").mockImplementation(async (callback: any) => {
+      vi.spyOn(prisma, "$transaction").mockImplementation(async (callback) => {
         const txMock = {
           pool: { update: vi.fn().mockResolvedValue({ ...acceptedPool, status: PoolStatus.DRIVER_ARRIVED }) },
           rideRequest: { update: vi.fn().mockResolvedValue({ ...nusratRide, status: RideStatus.DRIVER_ARRIVED }) },
@@ -482,7 +482,7 @@ describe("Phase 5 — Pooling & Concurrency Protection Tests", () => {
       vi.spyOn(prisma.user, "findUnique").mockResolvedValue(jashimDriver);
       vi.spyOn(prisma.pool, "findUnique").mockResolvedValue(arrivedPool as any);
 
-      vi.spyOn(prisma, "$transaction").mockImplementation(async (callback: any) => {
+      vi.spyOn(prisma, "$transaction").mockImplementation(async (callback) => {
         const txMock = {
           pool: { update: vi.fn().mockResolvedValue({ ...arrivedPool, status: PoolStatus.STARTED, startedAt: new Date() }) },
           rideRequest: { update: vi.fn().mockResolvedValue({ ...nusratRide, status: RideStatus.STARTED }) },
@@ -524,7 +524,7 @@ describe("Phase 5 — Pooling & Concurrency Protection Tests", () => {
       vi.spyOn(prisma.user, "findUnique").mockResolvedValue(jashimDriver);
       vi.spyOn(prisma.pool, "findUnique").mockResolvedValue(startedPool as any);
 
-      vi.spyOn(prisma, "$transaction").mockImplementation(async (callback: any) => {
+      vi.spyOn(prisma, "$transaction").mockImplementation(async (callback) => {
         const txMock = {
           pool: { update: vi.fn().mockResolvedValue({ ...startedPool, status: PoolStatus.COMPLETED, completedAt: new Date() }) },
           rideRequest: { update: vi.fn().mockResolvedValue({ ...nusratRide, status: RideStatus.COMPLETED }) },

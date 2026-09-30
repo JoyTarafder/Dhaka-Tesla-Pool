@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import { AuthProvider } from "@/context/auth-context";
+import { AppMotionConfig } from "@/components/motion/AppMotionConfig";
 import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
@@ -13,9 +15,6 @@ export const metadata: Metadata = {
     apple: "/brand-icon.svg",
   },
 };
-
-import { AuthProvider } from "@/context/auth-context";
-import { AppMotionConfig } from "@/components/motion/AppMotionConfig";
 
 export default function RootLayout({
   children,

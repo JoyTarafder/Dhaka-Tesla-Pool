@@ -12,7 +12,6 @@ export const createRideRequestSchema = z
     path: ["destinationZone"],
   });
 
-
 export const cancelRideSchema = z.object({
   reason: z.string().max(250).optional(),
 });

@@ -211,7 +211,8 @@ describe("Phase 4 — Ride Request Module Tests", () => {
       vi.spyOn(prisma.user, "findUnique").mockResolvedValue(nusratUser);
       vi.spyOn(prisma.rideRequest, "findUnique").mockResolvedValue(mockNusratRide);
 
-      vi.spyOn(prisma, "$transaction").mockImplementation(async (callback: any) => {
+      // Mock transactional cancellation
+      vi.spyOn(prisma, "$transaction").mockImplementation(async (callback) => {
         const txMock = {
           rideRequest: {
             update: vi.fn().mockResolvedValue({

@@ -10,7 +10,3 @@ export interface VehicleResponse {
   updatedAt: Date;
 }
 
-// Input payload for driver toggling vehicle online/offline availability
-export interface UpdateAvailabilityInput {
-  isOnline: boolean;
-}

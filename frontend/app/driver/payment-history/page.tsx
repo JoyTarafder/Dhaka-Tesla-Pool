@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import {
-  Zap,
   ArrowLeft,
   Wallet,
   CheckCircle2,
@@ -12,9 +11,7 @@ import {
   Receipt,
   Car,
   AlertCircle,
-  Loader2,
   LogOut,
-  Calendar,
   CreditCard,
   Banknote,
   Shield,
@@ -32,6 +29,7 @@ import {
   DriverTripHistory,
   ApiError,
 } from "@/lib/api";
+import { formatPoishaToBdt } from "@/lib/utils";
 import { PaymentHistorySkeleton } from "@/components/motion/SkeletonShimmer";
 
 export default function DriverPaymentHistoryPage() {
@@ -122,7 +120,7 @@ export default function DriverPaymentHistoryPage() {
   // Calculate average fare per trip using integer arithmetic where possible
   const avgFareFormatted =
     summary.totalTrips > 0
-      ? `৳${(Math.round(summary.totalEarningsPoisha / summary.totalTrips) / 100).toFixed(2)}`
+      ? formatPoishaToBdt(Math.round(summary.totalEarningsPoisha / summary.totalTrips))
       : "৳0.00";
 
   return (
